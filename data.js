@@ -1,5 +1,5 @@
 // 自動生成 by fetch_stocks.py
-// 最後更新: 2026-03-30 12:08:13
+// 最後更新: 2026-03-30 12:14:30
 // 共 1 週歷史資料 — 請勿手動編輯
 
 const STOCK_DATA = [
@@ -16,7 +16,7 @@ const STOCK_DATA = [
         "market_cap": 103.2,
         "daily_volume": 49.7,
         "sector": "電信",
-        "dividend_yield": 466.0,
+        "dividend_yield": 4.66,
         "risk_level": "中",
         "recommendation": ""
       },
@@ -44,7 +44,7 @@ const STOCK_DATA = [
         "market_cap": 15.7,
         "daily_volume": 9.9,
         "sector": "能源",
-        "dividend_yield": 225.0,
+        "dividend_yield": 2.25,
         "risk_level": "高",
         "recommendation": ""
       },
@@ -58,7 +58,7 @@ const STOCK_DATA = [
         "market_cap": 52.6,
         "daily_volume": 1.5,
         "sector": "保險",
-        "dividend_yield": 213.0,
+        "dividend_yield": 2.13,
         "risk_level": "中",
         "recommendation": ""
       },
@@ -72,7 +72,7 @@ const STOCK_DATA = [
         "market_cap": 27.1,
         "daily_volume": 4.1,
         "sector": "公用事業",
-        "dividend_yield": 499.0,
+        "dividend_yield": 4.99,
         "risk_level": "中",
         "recommendation": ""
       },
@@ -86,7 +86,7 @@ const STOCK_DATA = [
         "market_cap": 212.2,
         "daily_volume": 29.4,
         "sector": "電信",
-        "dividend_yield": 563.0,
+        "dividend_yield": 5.63,
         "risk_level": "低",
         "recommendation": "優先推薦"
       },
@@ -100,7 +100,7 @@ const STOCK_DATA = [
         "market_cap": 163.5,
         "daily_volume": 13.0,
         "sector": "能源",
-        "dividend_yield": 251.0,
+        "dividend_yield": 2.51,
         "risk_level": "中低",
         "recommendation": "推薦買入"
       },
@@ -114,7 +114,7 @@ const STOCK_DATA = [
         "market_cap": 712.5,
         "daily_volume": 25.3,
         "sector": "能源",
-        "dividend_yield": 241.0,
+        "dividend_yield": 2.41,
         "risk_level": "中低",
         "recommendation": ""
       },
@@ -128,7 +128,7 @@ const STOCK_DATA = [
         "market_cap": 153.8,
         "daily_volume": 45.0,
         "sector": "醫療",
-        "dividend_yield": 636.0,
+        "dividend_yield": 6.36,
         "risk_level": "中低",
         "recommendation": ""
       },
@@ -142,7 +142,7 @@ const STOCK_DATA = [
         "market_cap": 295.8,
         "daily_volume": 10.8,
         "sector": "醫療",
-        "dividend_yield": 284.0,
+        "dividend_yield": 2.84,
         "risk_level": "低",
         "recommendation": "優先推薦"
       }
