@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美國大型股價值與動能分析儀表板</title>
+    <style>
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+  --color-bg-4: rgba(239, 68, 68, 0.08);
+  --color-bg-5: rgba(147, 51, 234, 0.08);
+  --color-bg-6: rgba(249, 115, 22, 0.08);
+  --color-bg-7: rgba(236, 72, 153, 0.08);
+  --color-bg-8: rgba(6, 182, 212, 0.08);
+
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+
+  --color-success-rgb: 33, 128, 141;
+  --color-error-rgb: 192, 21, 47;
+  --color-warning-rgb: 168, 75, 47;
+  --color-info-rgb: 98, 108, 113;
+
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  --space-0: 0;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-400-rgb: 119, 124, 124;
+    --color-teal-300-rgb: 50, 184, 198;
+    --color-gray-300-rgb: 167, 169, 169;
+    --color-gray-200-rgb: 245, 245, 245;
+
+    --color-bg-1: rgba(29, 78, 216, 0.15);
+    --color-bg-2: rgba(180, 83, 9, 0.15);
+    --color-bg-3: rgba(21, 128, 61, 0.15);
+    --color-bg-4: rgba(185, 28, 28, 0.15);
+    --color-bg-5: rgba(107, 33, 168, 0.15);
+    --color-bg-6: rgba(194, 65, 12, 0.15);
+    --color-bg-7: rgba(190, 24, 93, 0.15);
+    --color-bg-8: rgba(8, 145, 178, 0.15);
+
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-primary-active: var(--color-teal-800);
+    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-error: var(--color-red-400);
+    --color-success: var(--color-teal-300);
+    --color-warning: var(--color-orange-400);
+    --color-info: var(--color-gray-300);
+    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+    --color-btn-primary-text: var(--color-slate-900);
+    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+
+    --color-success-rgb: var(--color-teal-300-rgb);
+    --color-error-rgb: var(--color-red-400-rgb);
+    --color-warning-rgb: var(--color-orange-400-rgb);
+    --color-info-rgb: var(--color-gray-300-rgb);
+  }
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: var(--line-height-normal);
+  font-size: var(--font-size-base);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-24);
+}
+
+/* Navigation */
+.navbar {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-16) 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+}
+
+.navbar-brand {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.navbar-nav {
+  display: flex;
+  gap: var(--space-8);
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius-base);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: all var(--duration-fast) var(--ease-standard);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+
+.nav-link.active {
+  background-color: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+/* Page Sections */
+.page-section {
+  display: none;
+  padding: var(--space-32) 0;
+}
+
+.page-section.active {
+  display: block;
+}
+
+.page-header {
+  margin-bottom: var(--space-32);
+}
+
+.page-title {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-8);
+}
+
+.page-subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* Cards */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-header {
+  margin-bottom: var(--space-16);
+}
+
+.card-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+
+.card-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Grid Layouts */
+.grid {
+  display: grid;
+  gap: var(--space-24);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Tables */
+.table-container {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-card-border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-surface);
+}
+
+thead {
+  background-color: var(--color-bg-1);
+  position: sticky;
+  top: 0;
+}
+
+th {
+  padding: var(--space-12) var(--space-16);
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+th.sortable:hover {
+  background-color: var(--color-bg-2);
+}
+
+td {
+  padding: var(--space-12) var(--space-16);
+  border-bottom: 1px solid var(--color-card-border-inner);
+  font-size: var(--font-size-sm);
+}
+
+tbody tr:hover {
+  background-color: var(--color-bg-1);
+}
+
+/* Badges and Labels */
+.badge {
+  display: inline-block;
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.badge-success {
+  background-color: rgba(var(--color-success-rgb), 0.15);
+  color: var(--color-success);
+  border: 1px solid rgba(var(--color-success-rgb), 0.3);
+}
+
+.badge-warning {
+  background-color: rgba(var(--color-warning-rgb), 0.15);
+  color: var(--color-warning);
+  border: 1px solid rgba(var(--color-warning-rgb), 0.3);
+}
+
+.badge-error {
+  background-color: rgba(var(--color-error-rgb), 0.15);
+  color: var(--color-error);
+  border: 1px solid rgba(var(--color-error-rgb), 0.3);
+}
+
+.badge-info {
+  background-color: rgba(var(--color-info-rgb), 0.15);
+  color: var(--color-info);
+  border: 1px solid rgba(var(--color-info-rgb), 0.3);
+}
+
+/* Risk Level Badges */
+.risk-low {
+  background-color: rgba(var(--color-success-rgb), 0.15);
+  color: var(--color-success);
+  border: 1px solid rgba(var(--color-success-rgb), 0.3);
+}
+
+.risk-medium, .risk-中, .risk-中低 {
+  background-color: rgba(var(--color-warning-rgb), 0.15);
+  color: var(--color-warning);
+  border: 1px solid rgba(var(--color-warning-rgb), 0.3);
+}
+
+.risk-high, .risk-中高, .risk-高 {
+  background-color: rgba(var(--color-error-rgb), 0.15);
+  color: var(--color-error);
+  border: 1px solid rgba(var(--color-error-rgb), 0.3);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: var(--space-12) var(--space-24);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+/* Stats Display */
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-card-border-inner);
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.stat-value {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+/* Positive/Negative Values */
+.positive {
+  color: var(--color-success);
+}
+
+.negative {
+  color: var(--color-error);
+}
+
+/* Special Highlight */
+.highlight-box {
+  background-color: var(--color-bg-3);
+  border-left: 4px solid var(--color-success);
+  padding: var(--space-16);
+  border-radius: var(--radius-base);
+  margin: var(--space-16) 0;
+}
+
+.warning-box {
+  background-color: var(--color-bg-2);
+  border-left: 4px solid var(--color-warning);
+  padding: var(--space-16);
+  border-radius: var(--radius-base);
+  margin: var(--space-16) 0;
+}
+
+/* Portfolio Allocations */
+.allocation-bar {
+  height: 8px;
+  background-color: var(--color-secondary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: var(--space-8) 0;
+}
+
+.allocation-fill {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-normal) var(--ease-standard);
+}
+
+/* Rating Stars */
+.rating {
+  color: #FFD700;
+  font-size: var(--font-size-lg);
+  letter-spacing: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .navbar-nav {
+    width: 100%;
+  }
+  
+  .nav-link {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .page-title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ticker Symbol Styling */
+.ticker {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+/* Section Divider */
+.section-divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-32) 0;
+}
+
+/* Info Box */
+.info-box {
+  background-color: var(--color-bg-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: var(--space-16);
+  margin: var(--space-16) 0;
+}
+
+.info-box-title {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-8);
+  color: var(--color-text);
+}
+
+.info-box-content {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* List Styles */
+ul.styled-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul.styled-list li {
+  padding: var(--space-8) 0;
+  padding-left: var(--space-20);
+  position: relative;
+}
+
+ul.styled-list li:before {
+  content: "•";
+  color: var(--color-primary);
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+/* ── 週別選擇器 ─────────────────────────── */
+.data-bar {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 8px 0;
+  position: sticky;
+  top: 57px;
+  z-index: 99;
+}
+
+.week-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.week-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.week-select {
+  padding: 4px 10px;
+  border-radius: var(--radius-base);
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+  color: var(--color-text);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.week-count {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.data-status {
+  font-size: 12px;
+  color: var(--color-warning);
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-brand">📊 美股分析儀表板</div>
+                <ul class="navbar-nav">
+                    <li><a class="nav-link active" data-page="home">首頁</a></li>
+                    <li><a class="nav-link" data-page="value">價值篩選</a></li>
+                    <li><a class="nav-link" data-page="momentum">動能分析</a></li>
+                    <li><a class="nav-link" data-page="cross">交叉分析</a></li>
+                    <li><a class="nav-link" data-page="risk">風險評估</a></li>
+                    <li><a class="nav-link" data-page="portfolio">投資組合</a></li>
+                    <li><a class="nav-link" data-page="market">市場背景</a></li>
+                    <li><a class="nav-link" data-page="history">📋 歷史資料</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 週別選擇器（全域） -->
+    <div class="data-bar">
+        <div class="container">
+            <div class="week-selector-host"></div>
+        </div>
+    </div>
+
+    <!-- Home Page -->
+    <section id="home" class="page-section active">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">美國大型股價值與動能分析</h1>
+                <p class="page-subtitle">專業量化篩選 · 資料日期: <strong id="stat-data-date">—</strong> · 聚焦高品質投資機會</p>
+            </div>
+
+            <!-- Key Highlights -->
+            <div class="highlight-box">
+                <h3 style="margin-bottom: 12px;">🎯 核心推薦</h3>
+                <p><strong class="ticker">MRK (Merck)</strong> - 唯一同時符合價值篩選與動能分析的股票，評級 ★★★★★</p>
+                <p style="margin-top: 8px;"><strong class="ticker">COP (ConocoPhillips)</strong> - 次優雙重機會，距52週低點最近，評級 ★★★★</p>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-3" style="margin-top: 32px;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">💎 價值篩選</h3>
+                        <p class="card-subtitle">低估值高品質股票</p>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">篩選股票數</span>
+                        <span class="stat-value" id="stat-value-count">—</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">平均 P/E 比</span>
+                        <span class="stat-value" id="stat-avg-pe">—</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">最低 P/E</span>
+                        <span class="stat-value" id="stat-min-pe">—</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">最高股息率</span>
+                        <span class="stat-value positive" id="stat-max-div">—</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🚀 動能分析</h3>
+                        <p class="card-subtitle">短期表現優異股票</p>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">動能股票數</span>
+                        <span class="stat-value" id="stat-momentum-count">—</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">5日最高漲幅</span>
+                        <span class="stat-value positive" id="stat-max-return">—</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">平均 RSI</span>
+                        <span class="stat-value" id="stat-avg-rsi">—</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">樂觀展望數</span>
+                        <span class="stat-value positive" id="stat-bullish">—</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">⭐ 雙重機會</h3>
+                        <p class="card-subtitle">價值+動能結合</p>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">交叉符合股票</span>
+                        <span class="stat-value">2 支</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">首選推薦</span>
+                        <span class="stat-value ticker">MRK</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">次選推薦</span>
+                        <span class="stat-value ticker">COP</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">平均評級</span>
+                        <span class="stat-value rating">★★★★½</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Recommendations -->
+            <div style="margin-top: 48px;">
+                <h2 style="font-size: 24px; margin-bottom: 24px; font-weight: 600;">🏆 優先推薦股票</h2>
+                <div class="grid grid-2">
+                    <div class="card" style="border-left: 4px solid var(--color-success);">
+                        <h3 style="font-size: 20px; margin-bottom: 8px;"><span class="ticker">VZ</span> - Verizon</h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: 16px; font-size: 13px;">通訊 | 價值篩選</p>
+                        <div class="stat-item">
+                            <span class="stat-label">P/E 比</span>
+                            <span class="stat-value">10.22</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">股息率</span>
+                            <span class="stat-value positive">6.16%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">距52週低點</span>
+                            <span class="stat-value">6.6%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">風險等級</span>
+                            <span class="badge risk-low">低</span>
+                        </div>
+                        <p style="margin-top: 16px; font-size: 13px; line-height: 1.6;"><strong>推薦理由：</strong>高股息防守股，適合保守投資者，市值1,853億美元，流動性強。</p>
+                    </div>
+
+                    <div class="card" style="border-left: 4px solid var(--color-success);">
+                        <h3 style="font-size: 20px; margin-bottom: 8px;"><span class="ticker">MRK</span> - Merck</h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: 16px; font-size: 13px;">醫療 | 價值 + 動能</p>
+                        <div class="stat-item">
+                            <span class="stat-label">P/E 比</span>
+                            <span class="stat-value">8.80</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">5日漲幅</span>
+                            <span class="stat-value positive">+7.7%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">RSI (14)</span>
+                            <span class="stat-value">62.8</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">評級</span>
+                            <span class="rating">★★★★★</span>
+                        </div>
+                        <p style="margin-top: 16px; font-size: 13px; line-height: 1.6;"><strong>推薦理由：</strong>唯一雙重信號股票，技術面與基本面共振，1-2週展望樂觀。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <div style="text-align: center; margin-top: 48px;">
+                <button class="btn btn-primary" onclick="navigateToPage('value')" style="font-size: 16px; padding: 16px 32px;">
+                    開始詳細分析 →
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Screening Page -->
+    <section id="value" class="page-section">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">💎 價值篩選分析</h1>
+                <p class="page-subtitle">篩選低估值、高品質的美國大型股</p>
+            </div>
+
+            <!-- Screening Criteria -->
+            <div class="info-box">
+                <h3 class="info-box-title">📋 篩選條件</h3>
+                <div class="info-box-content">
+                    <ul class="styled-list">
+                        <li>市值 &gt; $2B（聚焦大型股）</li>
+                        <li>本益比 (P/E) ≤ 10</li>
+                        <li>現股價位於52週低點10%範圍內</li>
+                        <li>股價 ≥ $5（排除便士股）</li>
+                        <li>日均成交量 &gt; 50萬股</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Value Stocks Table -->
+            <div class="table-container" style="margin-top: 24px;">
+                <table id="valueTable">
+                    <thead>
+                        <tr>
+                            <th>代碼</th>
+                            <th>公司名稱</th>
+                            <th class="sortable" data-sort="pe">P/E 比 ↕</th>
+                            <th>現股價 ($)</th>
+                            <th>52週低點 ($)</th>
+                            <th class="sortable" data-sort="distance">距低點% ↕</th>
+                            <th>市值 (B$)</th>
+                            <th>日均成交 (M股)</th>
+                            <th>產業</th>
+                            <th class="sortable" data-sort="dividend">股息率% ↕</th>
+                            <th>風險等級</th>
+                        </tr>
+                    </thead>
+                    <tbody id="valueTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Key Insights -->
+            <div style="margin-top: 32px;">
+                <h2 style="font-size: 20px; margin-bottom: 16px; font-weight: 600;">🔍 關鍵洞察</h2>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3 style="font-size: 16px; margin-bottom: 12px;">最低估值</h3>
+                        <p style="font-size: 13px; line-height: 1.6;"><span class="ticker">CMCSA</span> P/E 僅 4.55，為最低估值股票，但需注意通訊行業競爭壓力。</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 16px; margin-bottom: 12px;">最高股息</h3>
+                        <p style="font-size: 13px; line-height: 1.6;"><span class="ticker">PFE</span> 股息率 6.2%，<span class="ticker">VZ</span> 股息率 6.16%，適合收益型投資者。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Momentum Analysis Page -->
+    <section id="momentum" class="page-section">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">🚀 動能分析</h1>
+                <p class="page-subtitle">過去5個交易日表現最優異的美國大型股技術分析</p>
+            </div>
+
+            <!-- Momentum Indicators Explanation -->
+            <div class="info-box">
+                <h3 class="info-box-title">📊 技術指標說明</h3>
+                <div class="info-box-content">
+                    <ul class="styled-list">
+                        <li><strong>RSI (14日)：</strong>相對強弱指標，70以上為超買，30以下為超賣</li>
+                        <li><strong>ROC (變動率)：</strong>價格變動百分比，衡量動能強度</li>
+                        <li><strong>超買/超賣狀態：</strong>基於RSI的市場情緒判斷</li>
+                        <li><strong>1-2週展望：</strong>基於技術共振的短期機率評估</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Momentum Stocks Table -->
+            <div class="table-container" style="margin-top: 24px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>代碼</th>
+                            <th>公司名稱</th>
+                            <th>5日漲幅%</th>
+                            <th>RSI (14)</th>
+                            <th>ROC (14)%</th>
+                            <th>ROC (21)%</th>
+                            <th>超買/超賣</th>
+                            <th>1-2週展望</th>
+                            <th>趨勢驗證</th>
+                        </tr>
+                    </thead>
+                    <tbody id="momentumTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Momentum Insights -->
+            <div style="margin-top: 32px;">
+                <h2 style="font-size: 20px; margin-bottom: 16px; font-weight: 600;">⚡ 動能洞察</h2>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <h3 style="font-size: 16px; margin-bottom: 12px;">領漲股票</h3>
+                        <p style="font-size: 13px; line-height: 1.6;"><span class="ticker">LLY</span> 5日漲幅 +10.9%，但RSI 68.5 接近超買，建議謹慎。</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 16px; margin-bottom: 12px;">最佳平衡</h3>
+                        <p style="font-size: 13px; line-height: 1.6;"><span class="ticker">MRK</span> 漲幅 +7.7%，RSI 62.8 適中，技術面健康。</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 16px; margin-bottom: 12px;">醫療板塊</h3>
+                        <p style="font-size: 13px; line-height: 1.6;">醫療股表現強勁，MRK、ABBV、GILD、AMGN 均入榜。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cross Analysis Page -->
+    <section id="cross" class="page-section">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">⭐ 交叉分析</h1>
+                <p class="page-subtitle">同時符合價值篩選與動能分析的雙重投資機會</p>
+            </div>
+
+            <div class="highlight-box">
+                <h3 style="margin-bottom: 12px;">🎯 雙重機會股票</h3>
+                <p>僅有 <strong>2支股票</strong> 同時符合價值篩選（P/E ≤10，接近52週低點）與動能分析（5日表現最優）標準</p>
+            </div>
+
+            <!-- MRK Card -->
+            <div class="card" style="margin-top: 32px; border: 2px solid var(--color-success);">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+                    <div>
+                        <h2 style="font-size: 28px; margin-bottom: 8px;">
+                            <span class="ticker">MRK</span> - Merck
+                        </h2>
+                        <p style="color: var(--color-text-secondary);">醫療保健 · 市值 $280.5B</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="rating" style="font-size: 24px;">★★★★★</div>
+                        <div class="badge badge-success" style="margin-top: 8px;">優先推薦買入</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-2" style="margin-top: 24px;">
+                    <div>
+                        <h3 style="font-size: 16px; margin-bottom: 12px; color: var(--color-primary);">💎 價值評估</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">本益比 (P/E)</span>
+                            <span class="stat-value">8.80</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">現股價</span>
+                            <span class="stat-value">$65.50</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">52週低點</span>
+                            <span class="stat-value">$60.20</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">距低點</span>
+                            <span class="stat-value">8.8%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">股息率</span>
+                            <span class="stat-value positive">3.8%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">日均成交量</span>
+                            <span class="stat-value">9.5M 股</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="font-size: 16px; margin-bottom: 12px; color: var(--color-primary);">🚀 動能表現</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">5日漲幅</span>
+                            <span class="stat-value positive">+7.7%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">RSI (14日)</span>
+                            <span class="stat-value">62.8</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">ROC (14日)</span>
+                            <span class="stat-value positive">+9.5%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">ROC (21日)</span>
+                            <span class="stat-value positive">+13.8%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">市場狀態</span>
+                            <span class="badge badge-success">中性</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">1-2週展望</span>
+                            <span class="badge badge-success">樂觀</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px; padding: 16px; background-color: var(--color-bg-3); border-radius: var(--radius-base);">
+                    <h3 style="font-size: 14px; margin-bottom: 8px; font-weight: 600;">📈 綜合評估</h3>
+                    <p style="font-size: 13px; line-height: 1.6;">Merck 是唯一同時符合價值篩選與動能分析的股票，展現了罕見的基本面與技術面共振。P/E比8.80處於低估值區間，同時保持7.7%的強勁5日漲幅。RSI 62.8處於健康區間，未出現超買，技術指標支持進一步上漲。股價高於所有主要均線（20日、50日、200日），趨勢明確向上。風險等級低，適合各類型投資者。</p>
+                </div>
+            </div>
+
+            <!-- COP Card -->
+            <div class="card" style="margin-top: 24px; border: 2px solid var(--color-warning);">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+                    <div>
+                        <h2 style="font-size: 28px; margin-bottom: 8px;">
+                            <span class="ticker">COP</span> - ConocoPhillips
+                        </h2>
+                        <p style="color: var(--color-text-secondary);">能源 · 市值 $75.6B</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="rating" style="font-size: 24px;">★★★★</div>
+                        <div class="badge badge-warning" style="margin-top: 8px;">推薦買入</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-2" style="margin-top: 24px;">
+                    <div>
+                        <h3 style="font-size: 16px; margin-bottom: 12px; color: var(--color-primary);">💎 價值評估</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">本益比 (P/E)</span>
+                            <span class="stat-value">9.80</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">現股價</span>
+                            <span class="stat-value">$58.75</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">52週低點</span>
+                            <span class="stat-value">$55.80</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">距低點</span>
+                            <span class="stat-value">5.4%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">股息率</span>
+                            <span class="stat-value positive">2.8%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">日均成交量</span>
+                            <span class="stat-value">7.5M 股</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="font-size: 16px; margin-bottom: 12px; color: var(--color-primary);">🚀 動能表現</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">5日漲幅</span>
+                            <span class="stat-value positive">+5.2%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">RSI (14日)</span>
+                            <span class="stat-value">58.7</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">ROC (14日)</span>
+                            <span class="stat-value positive">+7.1%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">ROC (21日)</span>
+                            <span class="stat-value positive">+10.2%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">市場狀態</span>
+                            <span class="badge badge-success">中性</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">1-2週展望</span>
+                            <span class="badge badge-success">樂觀</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px; padding: 16px; background-color: var(--color-bg-2); border-radius: var(--radius-base);">
+                    <h3 style="font-size: 14px; margin-bottom: 8px; font-weight: 600;">📈 綜合評估</h3>
+                    <p style="font-size: 13px; line-height: 1.6;">ConocoPhillips 是第二支同時符合雙重標準的股票。距52週低點僅5.4%，為所有篩選股票中最接近低點者，提供較好的進場點。P/E比9.80仍屬合理估值，5日漲幅5.2%顯示動能良好。RSI 58.7處於健康水平，技術面支持繼續上漲。作為大型能源股，受益於油價企穩。風險等級中低，適合平衡型及進攻型投資者配置能源板塊。</p>
+                </div>
+            </div>
+
+            <!-- Comparison -->
+            <div style="margin-top: 32px;">
+                <h2 style="font-size: 20px; margin-bottom: 16px; font-weight: 600;">🔄 對比分析</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>指標</th>
+                                <th>MRK</th>
+                                <th>COP</th>
+                                <th>優勢</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>P/E 比</td>
+                                <td>8.80</td>
+                                <td>9.80</td>
+                                <td><span class="ticker">MRK</span> 更低估</td>
+                            </tr>
+                            <tr>
+                                <td>距52週低點</td>
+                                <td>8.8%</td>
+                                <td>5.4%</td>
+                                <td><span class="ticker">COP</span> 更接近低點</td>
+                            </tr>
+                            <tr>
+                                <td>5日漲幅</td>
+                                <td class="positive">+7.7%</td>
+                                <td class="positive">+5.2%</td>
+                                <td><span class="ticker">MRK</span> 動能更強</td>
+                            </tr>
+                            <tr>
+                                <td>股息率</td>
+                                <td class="positive">3.8%</td>
+                                <td>2.8%</td>
+                                <td><span class="ticker">MRK</span> 收益更高</td>
+                            </tr>
+                            <tr>
+                                <td>市值</td>
+                                <td>$280.5B</td>
+                                <td>$75.6B</td>
+                                <td><span class="ticker">MRK</span> 更大型</td>
+                            </tr>
+                            <tr>
+                                <td>風險等級</td>
+                                <td><span class="badge risk-low">低</span></td>
+                                <td><span class="badge risk-中低">中低</span></td>
+                                <td><span class="ticker">MRK</span> 風險更低</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Assessment Page -->
+    <section id="risk" class="page-section">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">⚠️ 風險評估</h1>
+                <p class="page-subtitle">基於市值、波動性、產業特性的風險分級</p>
+            </div>
+
+            <!-- Risk Overview -->
+            <div class="grid grid-3" style="margin-bottom: 32px;">
+                <div class="card">
+                    <h3 style="color: var(--color-success); margin-bottom: 12px;">✅ 低風險 (2支)</h3>
+                    <p style="font-size: 13px; line-height: 1.6;">大市值、穩定股息、防守性行業</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--color-warning); margin-bottom: 12px;">⚡ 中風險 (6支)</h3>
+                    <p style="font-size: 13px; line-height: 1.6;">市值適中、行業波動適度</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--color-error); margin-bottom: 12px;">⚠️ 高風險 (2支)</h3>
+                    <p style="font-size: 13px; line-height: 1.6;">高波動、行業週期性強</p>
+                </div>
+            </div>
+
+            <!-- Low Risk Group -->
+            <div class="card" style="margin-bottom: 24px; border-left: 4px solid var(--color-success);">
+                <h2 style="font-size: 20px; margin-bottom: 16px; color: var(--color-success);">✅ 低風險股票</h2>
+                <p style="margin-bottom: 16px; font-size: 13px;"><strong>特徵：</strong>超大市值（&gt;$100B）、高股息、防守性行業、低波動</p>
+                
+                <div class="grid grid-2">
+                    <div style="padding: 16px; background-color: var(--color-bg-3); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 16px; margin-bottom: 8px;"><span class="ticker">VZ</span> - Verizon</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">市值</span>
+                            <span class="stat-value">$185.3B</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">股息率</span>
+                            <span class="stat-value positive">6.16%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">產業</span>
+                            <span class="stat-value">通訊（防守）</span>
+                        </div>
+                        <p style="margin-top: 12px; font-size: 12px; line-height: 1.5;"><strong>投資建議：</strong>極適合保守投資者，高股息提供穩定現金流，通訊業務具防守性。</p>
+                    </div>
+
+                    <div style="padding: 16px; background-color: var(--color-bg-3); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 16px; margin-bottom: 8px;"><span class="ticker">MRK</span> - Merck</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">市值</span>
+                            <span class="stat-value">$280.5B</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">股息率</span>
+                            <span class="stat-value positive">3.8%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">產業</span>
+                            <span class="stat-value">醫療（防守）</span>
+                        </div>
+                        <p style="margin-top: 12px; font-size: 12px; line-height: 1.5;"><strong>投資建議：</strong>雙重信號股票，基本面穩健，技術面良好，各類投資者均適合配置。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medium Risk Group -->
+            <div class="card" style="margin-bottom: 24px; border-left: 4px solid var(--color-warning);">
+                <h2 style="font-size: 20px; margin-bottom: 16px; color: var(--color-warning);">⚡ 中風險股票</h2>
+                <p style="margin-bottom: 16px; font-size: 13px;"><strong>特徵：</strong>市值$10B-$200B、適度波動、多元化業務</p>
+                
+                <div class="grid grid-3">
+                    <div style="padding: 12px; background-color: var(--color-bg-2); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 14px; margin-bottom: 6px;"><span class="ticker">CMCSA</span></h3>
+                        <p style="font-size: 12px; color: var(--color-text-secondary);">康卡斯特 · 通訊</p>
+                        <div style="margin-top: 8px; font-size: 12px;">
+                            <div>市值: $125.8B</div>
+                            <div>P/E: 4.55（最低）</div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 12px; background-color: var(--color-bg-2); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 14px; margin-bottom: 6px;"><span class="ticker">PFE</span></h3>
+                        <p style="font-size: 12px; color: var(--color-text-secondary);">Pfizer · 醫療</p>
+                        <div style="margin-top: 8px; font-size: 12px;">
+                            <div>市值: $138.7B</div>
+                            <div>股息率: 6.2%</div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 12px; background-color: var(--color-bg-2); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 14px; margin-bottom: 6px;"><span class="ticker">ALL</span></h3>
+                        <p style="font-size: 12px; color: var(--color-text-secondary);">Allstate · 金融</p>
+                        <div style="margin-top: 8px; font-size: 12px;">
+                            <div>市值: $35.2B</div>
+                            <div>距低點: 7.3%</div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 12px; background-color: var(--color-bg-2); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 14px; margin-bottom: 6px;"><span class="ticker">EIX</span></h3>
+                        <p style="font-size: 12px; color: var(--color-text-secondary);">Edison · 公用事業</p>
+                        <div style="margin-top: 8px; font-size: 12px;">
+                            <div>市值: $18.9B</div>
+                            <div>股息率: 4.1%</div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 12px; background-color: var(--color-bg-2); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 14px; margin-bottom: 6px;"><span class="ticker">COP</span></h3>
+                        <p style="font-size: 12px; color: var(--color-text-secondary);">ConocoPhillips · 能源</p>
+                        <div style="margin-top: 8px; font-size: 12px;">
+                            <div>市值: $75.6B</div>
+                            <div>雙重信號 ★★★★</div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 12px; background-color: var(--color-bg-2); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 14px; margin-bottom: 6px;"><span class="ticker">XOM</span></h3>
+                        <p style="font-size: 12px; color: var(--color-text-secondary);">埃克森美孚 · 能源</p>
+                        <div style="margin-top: 8px; font-size: 12px;">
+                            <div>市值: $454.1B</div>
+                            <div>股息率: 3.5%</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top: 16px; font-size: 13px; line-height: 1.6;"><strong>投資建議：</strong>適合平衡型投資者，建議分散配置於不同行業，注意能源板塊的油價風險。</p>
+            </div>
+
+            <!-- High Risk Group -->
+            <div class="card" style="border-left: 4px solid var(--color-error);">
+                <h2 style="font-size: 20px; margin-bottom: 16px; color: var(--color-error);">⚠️ 高風險股票</h2>
+                <p style="margin-bottom: 16px; font-size: 13px;"><strong>特徵：</strong>小市值或高波動行業、週期性強、無股息或股息低</p>
+                
+                <div class="grid grid-2">
+                    <div style="padding: 16px; background-color: var(--color-bg-4); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 16px; margin-bottom: 8px;"><span class="ticker">APA</span> - APA公司</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">市值</span>
+                            <span class="stat-value">$7.74B</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">股息率</span>
+                            <span class="stat-value">0.0%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">產業</span>
+                            <span class="stat-value">能源（高波動）</span>
+                        </div>
+                        <p style="margin-top: 12px; font-size: 12px; line-height: 1.5;"><strong>風險因素：</strong>小市值能源股，油價波動敏感，無股息緩衝，僅適合風險承受能力高的投資者。</p>
+                    </div>
+
+                    <div style="padding: 16px; background-color: var(--color-bg-4); border-radius: var(--radius-base);">
+                        <h3 style="font-size: 16px; margin-bottom: 8px;"><span class="ticker">CHTR</span> - Charter Communications</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">市值</span>
+                            <span class="stat-value">$55.6B</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">距低點</span>
+                            <span class="stat-value">29.2%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">產業</span>
+                            <span class="stat-value">通訊（競爭激烈）</span>
+                        </div>
+                        <p style="margin-top: 12px; font-size: 12px; line-height: 1.5;"><strong>風險因素：</strong>距52週低點較遠，已有29.2%漲幅，行業面臨剪線潮壓力，成交量偏低。</p>
+                    </div>
+                </div>
+                <div class="warning-box" style="margin-top: 16px;">
+                    <p style="font-size: 13px; line-height: 1.6;"><strong>⚠️ 重要提醒：</strong>高風險股票波動性大，建議僅以小倉位配置，並設置嚴格止損。不適合風險承受能力低或投資期限短的投資者。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Recommendations Page -->
+    <section id="portfolio" class="page-section">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">📁 投資組合推薦</h1>
+                <p class="page-subtitle">基於風險偏好的三種預設配置方案</p>
+            </div>
+
+            <!-- Conservative Portfolio -->
+            <div class="card" style="margin-bottom: 32px;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+                    <div>
+                        <h2 style="font-size: 24px; margin-bottom: 8px;">🛡️ 保守型投資者</h2>
+                        <p style="color: var(--color-text-secondary);">低風險偏好 · 追求穩定收益</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 28px; font-weight: 600; color: var(--color-success);">4-6%</div>
+                        <div style="font-size: 12px; color: var(--color-text-secondary);">目標年化收益</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>代碼</th>
+                                <th>公司名稱</th>
+                                <th>配置%</th>
+                                <th>推薦理由</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ticker">VZ</td>
+                                <td>Verizon</td>
+                                <td>50%</td>
+                                <td>高股息6.16%、防守性強、風險低</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">MRK</td>
+                                <td>Merck</td>
+                                <td>40%</td>
+                                <td>低風險、雙重信號、醫療防守</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">CMCSA</td>
+                                <td>康卡斯特</td>
+                                <td>30%</td>
+                                <td>最低P/E 4.55、流動性強</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">PFE</td>
+                                <td>Pfizer</td>
+                                <td>30%</td>
+                                <td>高股息6.2%、醫療防守</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">XOM</td>
+                                <td>埃克森美孚</td>
+                                <td>20%</td>
+                                <td>大型股、能源配置、股息3.5%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 20px; padding: 16px; background-color: var(--color-bg-3); border-radius: var(--radius-base);">
+                    <h3 style="font-size: 14px; margin-bottom: 8px; font-weight: 600;">💡 配置說明</h3>
+                    <p style="font-size: 13px; line-height: 1.6;">以高股息、低風險股票為核心，50%配置於VZ獲取穩定現金流，40%配置於MRK享受雙重機會，其餘分散於醫療、通訊、能源等防守性行業。總股息率約4.8%，適合退休規劃或保守投資者。</p>
+                </div>
+            </div>
+
+            <!-- Balanced Portfolio -->
+            <div class="card" style="margin-bottom: 32px;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+                    <div>
+                        <h2 style="font-size: 24px; margin-bottom: 8px;">⚖️ 平衡型投資者</h2>
+                        <p style="color: var(--color-text-secondary);">風險與收益平衡 · 適度進取</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 28px; font-weight: 600; color: var(--color-primary);">8-12%</div>
+                        <div style="font-size: 12px; color: var(--color-text-secondary);">目標年化收益</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>代碼</th>
+                                <th>公司名稱</th>
+                                <th>配置%</th>
+                                <th>推薦理由</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ticker">MRK</td>
+                                <td>Merck</td>
+                                <td>50%</td>
+                                <td>核心持倉，雙重機會，技術面健康</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">COP</td>
+                                <td>ConocoPhillips</td>
+                                <td>40%</td>
+                                <td>價值+動能+能源主題</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">VZ</td>
+                                <td>Verizon</td>
+                                <td>30%</td>
+                                <td>防守基礎，高股息</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">CMCSA</td>
+                                <td>康卡斯特</td>
+                                <td>20%</td>
+                                <td>最低估值，價值機會</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">DHR</td>
+                                <td>Danaher</td>
+                                <td>20%</td>
+                                <td>動能健康，RSI 59.2</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">XOM</td>
+                                <td>埃克森美孚</td>
+                                <td>20%</td>
+                                <td>能源配置，大市值</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">PFE</td>
+                                <td>Pfizer</td>
+                                <td>10%</td>
+                                <td>醫療配置，高股息</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">ABBV</td>
+                                <td>AbbVie</td>
+                                <td>10%</td>
+                                <td>適度進攻，動能良好</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 20px; padding: 16px; background-color: var(--color-bg-1); border-radius: var(--radius-base);">
+                    <h3 style="font-size: 14px; margin-bottom: 8px; font-weight: 600;">💡 配置說明</h3>
+                    <p style="font-size: 13px; line-height: 1.6;">50%核心倉位於MRK（雙重機會），40%配置於COP（次優雙重信號+能源主題），其餘分散於防守股VZ、低估值CMCSA及動能股DHR、ABBV。兼顧價值與動能，行業分散於醫療、能源、通訊，適合中期持有的平衡型投資者。</p>
+                </div>
+            </div>
+
+            <!-- Aggressive Portfolio -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+                    <div>
+                        <h2 style="font-size: 24px; margin-bottom: 8px;">🚀 進攻型投資者</h2>
+                        <p style="color: var(--color-text-secondary);">高風險偏好 · 追求資本增值</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 28px; font-weight: 600; color: var(--color-warning);">12-20%</div>
+                        <div style="font-size: 12px; color: var(--color-text-secondary);">目標年化收益</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>代碼</th>
+                                <th>公司名稱</th>
+                                <th>配置%</th>
+                                <th>推薦理由</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ticker">MRK</td>
+                                <td>Merck</td>
+                                <td>40%</td>
+                                <td>雙重信號，最優選擇</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">COP</td>
+                                <td>ConocoPhillips</td>
+                                <td>30%</td>
+                                <td>雙重信號，次優選擇</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">DHR</td>
+                                <td>Danaher</td>
+                                <td>30%</td>
+                                <td>動能良好，RSI健康</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">ABBV</td>
+                                <td>AbbVie</td>
+                                <td>20%</td>
+                                <td>醫療進攻，動能強勁</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">AMD</td>
+                                <td>AMD</td>
+                                <td>20%</td>
+                                <td>科技進攻，高成長</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">CSCO</td>
+                                <td>Cisco</td>
+                                <td>10%</td>
+                                <td>謹慎追漲，RSI 65.2</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">LLY</td>
+                                <td>禮來</td>
+                                <td>10%</td>
+                                <td>等待回調後進場</td>
+                            </tr>
+                            <tr>
+                                <td class="ticker">GILD</td>
+                                <td>吉利德科學</td>
+                                <td>10%</td>
+                                <td>動能配置，醫療板塊</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 20px; padding: 16px; background-color: var(--color-bg-6); border-radius: var(--radius-base);">
+                    <h3 style="font-size: 14px; margin-bottom: 8px; font-weight: 600;">💡 配置說明</h3>
+                    <p style="font-size: 13px; line-height: 1.6;">40%核心倉位於MRK（最優雙重信號），30%配置於COP及DHR，其餘分散於高動能股票。重點配置於動能分析入榜股票，追求短期資本增值。LLY、CSCO因RSI偏高建議小倉位或等待回調。適合風險承受能力強、能夠承受短期波動的積極投資者。</p>
+                </div>
+
+                <div class="warning-box" style="margin-top: 16px;">
+                    <p style="font-size: 13px; line-height: 1.6;"><strong>⚠️ 風險提示：</strong>進攻型組合波動性較大，建議設置止損點（建議-8%），密切關注技術指標變化，特別是RSI超買信號。不適合風險承受能力低或投資期限短於6個月的投資者。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Context Page -->
+    <section id="market" class="page-section">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">🌍 市場背景</h1>
+                <p class="page-subtitle">2025年11月美股市場環境與投資機會</p>
+            </div>
+
+            <!-- Market Overview -->
+            <div class="card" style="margin-bottom: 32px;">
+                <h2 style="font-size: 20px; margin-bottom: 16px;">📊 市場概況</h2>
+                <p style="font-size: 14px; line-height: 1.6; margin-bottom: 12px;">2025年11月，美股市場呈現分化特徵。大型價值股因估值回歸吸引資金關注，同時部分防守性板塊展現動能。本分析聚焦於市值超過20億美元、具備流動性的大型股，排除便士股及小市值標的。</p>
+            </div>
+
+            <div class="grid grid-2" style="margin-bottom: 32px;">
+                <div class="card">
+                    <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--color-primary);">📉 估值環境</h3>
+                    <ul class="styled-list" style="font-size: 13px; line-height: 1.8;">
+                        <li>多支大型股P/E比低於10，處於歷史低估值區間</li>
+                        <li>通訊、能源板塊估值吸引力顯著</li>
+                        <li>醫療保健龍頭估值合理，具備上漲空間</li>
+                        <li>52週低點附近股票數量增加，提供進場機會</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--color-primary);">🗓️ 季節性因素</h3>
+                    <ul class="styled-list" style="font-size: 13px; line-height: 1.8;">
+                        <li>11月歷史上為美股表現較佳月份</li>
+                        <li>年底前機構調倉窗口，價值股受青睞</li>
+                        <li>節假日季消費預期提振相關板塊</li>
+                        <li>第四季度財報季臨近，關注業績指引</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid grid-2" style="margin-bottom: 32px;">
+                <div class="card">
+                    <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--color-primary);">🏭 行業表現</h3>
+                    <ul class="styled-list" style="font-size: 13px; line-height: 1.8;">
+                        <li><strong>醫療保健：</strong>多支股票同時入榜價值與動能分析，板塊強勢</li>
+                        <li><strong>能源：</strong>油價企穩，能源股估值與動能兼具</li>
+                        <li><strong>通訊：</strong>高股息吸引資金，適合防守配置</li>
+                        <li><strong>科技：</strong>部分股票展現動能，但需警惕超買</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--color-primary);">🌐 宏觀背景</h3>
+                    <ul class="styled-list" style="font-size: 13px; line-height: 1.8;">
+                        <li>利率環境相對穩定，有利於大型股表現</li>
+                        <li>經濟軟著陸預期支撐市場信心</li>
+                        <li>地緣政治風險需持續關注</li>
+                        <li>美元走勢影響跨國企業盈利</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Opportunities and Risks -->
+            <div class="grid grid-2">
+                <div class="card" style="border-left: 4px solid var(--color-success);">
+                    <h3 style="font-size: 18px; margin-bottom: 16px; color: var(--color-success);">✅ 投資機會</h3>
+                    <div style="font-size: 13px; line-height: 1.8;">
+                        <div style="padding: 12px; background-color: var(--color-bg-3); border-radius: var(--radius-base); margin-bottom: 12px;">
+                            <strong>價值回歸</strong><br>
+                            10支股票P/E ≤10且接近52週低點，估值修復空間大
+                        </div>
+                        <div style="padding: 12px; background-color: var(--color-bg-3); border-radius: var(--radius-base); margin-bottom: 12px;">
+                            <strong>動能延續</strong><br>
+                            8支動能股展望樂觀，技術面支持短期上漲
+                        </div>
+                        <div style="padding: 12px; background-color: var(--color-bg-3); border-radius: var(--radius-base); margin-bottom: 12px;">
+                            <strong>雙重機會</strong><br>
+                            MRK、COP同時符合價值與動能標準，罕見的投資機會
+                        </div>
+                        <div style="padding: 12px; background-color: var(--color-bg-3); border-radius: var(--radius-base);">
+                            <strong>股息收益</strong><br>
+                            多支股票股息率超過3%，提供下行保護
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--color-error);">
+                    <h3 style="font-size: 18px; margin-bottom: 16px; color: var(--color-error);">⚠️ 風險因素</h3>
+                    <div style="font-size: 13px; line-height: 1.8;">
+                        <div style="padding: 12px; background-color: var(--color-bg-4); border-radius: var(--radius-base); margin-bottom: 12px;">
+                            <strong>超買風險</strong><br>
+                            LLY、CSCO的RSI接近或超過70，短期回調壓力增加
+                        </div>
+                        <div style="padding: 12px; background-color: var(--color-bg-4); border-radius: var(--radius-base); margin-bottom: 12px;">
+                            <strong>行業風險</strong><br>
+                            能源股受油價波動影響，通訊業面臨剪線潮壓力
+                        </div>
+                        <div style="padding: 12px; background-color: var(--color-bg-4); border-radius: var(--radius-base); margin-bottom: 12px;">
+                            <strong>市值風險</strong><br>
+                            小市值股票（如APA）波動性大，流動性相對較低
+                        </div>
+                        <div style="padding: 12px; background-color: var(--color-bg-4); border-radius: var(--radius-base);">
+                            <strong>宏觀風險</strong><br>
+                            政策變化、地緣政治、經濟數據超預期均可能引發市場波動
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Investment Strategy Summary -->
+            <div class="card" style="margin-top: 32px; background-color: var(--color-bg-1);">
+                <h2 style="font-size: 20px; margin-bottom: 16px;">🎯 投資策略總結</h2>
+                <div style="font-size: 14px; line-height: 1.8;">
+                    <p style="margin-bottom: 12px;"><strong>1. 核心配置：</strong>優先選擇MRK、VZ等低風險、雙重信號股票作為組合核心，佔比40-50%。</p>
+                    <p style="margin-bottom: 12px;"><strong>2. 衛星配置：</strong>根據風險偏好，配置COP、DHR、ABBV等動能股，佔比30-40%。</p>
+                    <p style="margin-bottom: 12px;"><strong>3. 行業分散：</strong>建議配置於醫療、能源、通訊等3-4個行業，避免單一行業風險。</p>
+                    <p style="margin-bottom: 12px;"><strong>4. 動態調整：</strong>密切關注RSI指標，當超過70時考慮獲利了結，低於30時關注加倉機會。</p>
+                    <p><strong>5. 風險控制：</strong>建議設置組合層面-10%止損點，單一股票-8%止損點，保護資本安全。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 歷史資料頁 -->
+    <section id="history" class="page-section">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">📋 歷史資料調閱</h1>
+                <p class="page-subtitle">每週快照記錄，追蹤關鍵股票的價格、估值與動能變化</p>
+            </div>
+
+            <div class="info-box">
+                <h3 class="info-box-title">📌 使用說明</h3>
+                <div class="info-box-content">
+                    追蹤 MRK、COP、VZ、XOM、PFE 五支核心股票的每週資料。
+                    點擊任一列可切換至該週的完整資料檢視。
+                    ▲▼ 顯示與前一週的價格變化。
+                </div>
+            </div>
+
+            <div class="table-container" style="margin-top: 24px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>週別</th>
+                            <th>代碼</th>
+                            <th>股價</th>
+                            <th>週變化</th>
+                            <th>P/E 比</th>
+                            <th>股息率</th>
+                            <th>5日漲幅</th>
+                            <th>RSI</th>
+                            <th>展望</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="info-box" style="margin-top: 24px;">
+                <h3 class="info-box-title">🔄 自動更新設定</h3>
+                <div class="info-box-content">
+                    <ul class="styled-list">
+                        <li><strong>首次設定：</strong>在 Terminal 執行 <code style="background:var(--color-secondary);padding:2px 6px;border-radius:4px;font-size:11px;">bash backend/setup.sh</code></li>
+                        <li><strong>自動排程：</strong>每週一早上 08:00 自動從 Yahoo Finance 抓取最新資料</li>
+                        <li><strong>手動更新：</strong>隨時執行 <code style="background:var(--color-secondary);padding:2px 6px;border-radius:4px;font-size:11px;">bash update_now.sh</code></li>
+                        <li><strong>執行記錄：</strong>查看 <code style="background:var(--color-secondary);padding:2px 6px;border-radius:4px;font-size:11px;">backend/logs/fetch.log</code></li>
+                        <li><strong>資料儲存：</strong>最多保留 52 週（一年）的歷史快照於 <code style="background:var(--color-secondary);padding:2px 6px;border-radius:4px;font-size:11px;">data/stock_history.json</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

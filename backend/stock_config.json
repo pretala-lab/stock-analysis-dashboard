@@ -1,0 +1,26 @@
+{
+  "value_stocks": [
+    {"ticker": "CMCSA", "name": "康卡斯特", "sector": "電信", "risk_level": "中"},
+    {"ticker": "CHTR", "name": "Charter Communications", "sector": "電信", "risk_level": "中高"},
+    {"ticker": "APA",  "name": "APA公司", "sector": "能源", "risk_level": "高"},
+    {"ticker": "ALL",  "name": "Allstate公司", "sector": "保險", "risk_level": "中"},
+    {"ticker": "EIX",  "name": "Edison International", "sector": "公用事業", "risk_level": "中"},
+    {"ticker": "VZ",   "name": "Verizon", "sector": "電信", "risk_level": "低", "recommendation": "優先推薦"},
+    {"ticker": "COP",  "name": "ConocoPhillips", "sector": "能源", "risk_level": "中低", "recommendation": "推薦買入"},
+    {"ticker": "XOM",  "name": "埃克森美孚", "sector": "能源", "risk_level": "中低"},
+    {"ticker": "PFE",  "name": "Pfizer", "sector": "醫療", "risk_level": "中低"},
+    {"ticker": "MRK",  "name": "Merck", "sector": "醫療", "risk_level": "低", "recommendation": "優先推薦"}
+  ],
+  "momentum_stocks": [
+    {"ticker": "LLY",  "name": "禮來"},
+    {"ticker": "CSCO", "name": "Cisco"},
+    {"ticker": "MRK",  "name": "Merck"},
+    {"ticker": "ABBV", "name": "AbbVie"},
+    {"ticker": "AMD",  "name": "AMD"},
+    {"ticker": "DHR",  "name": "Danaher"},
+    {"ticker": "COP",  "name": "ConocoPhillips"},
+    {"ticker": "GILD", "name": "吉利德科學"},
+    {"ticker": "AMGN", "name": "Amgen"},
+    {"ticker": "NKE",  "name": "Nike"}
+  ]
+}

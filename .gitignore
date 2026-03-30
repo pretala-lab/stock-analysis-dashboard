@@ -1,0 +1,10 @@
+# Python 虛擬環境
+backend/venv/
+backend/__pycache__/
+*.pyc
+
+# 執行記錄（本機用，不需上傳）
+backend/logs/
+
+# macOS 系統檔
+.DS_Store
