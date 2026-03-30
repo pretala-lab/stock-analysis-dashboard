@@ -10,7 +10,7 @@
         "low_52w": 24.13,
         "distance_from_low": 17.4,
         "market_cap": 103.2,
-        "daily_volume": 49.7,
+        "daily_volume": 48.6,
         "sector": "電信",
         "dividend_yield": 4.66,
         "risk_level": "中",
@@ -24,7 +24,7 @@
         "low_52w": 180.38,
         "distance_from_low": 21.5,
         "market_cap": 27.8,
-        "daily_volume": 1.6,
+        "daily_volume": 1.4,
         "sector": "電信",
         "dividend_yield": 0.0,
         "risk_level": "中高",
@@ -38,7 +38,7 @@
         "low_52w": 13.58,
         "distance_from_low": 226.9,
         "market_cap": 15.7,
-        "daily_volume": 9.9,
+        "daily_volume": 11.3,
         "sector": "能源",
         "dividend_yield": 2.25,
         "risk_level": "高",
@@ -66,7 +66,7 @@
         "low_52w": 47.73,
         "distance_from_low": 47.3,
         "market_cap": 27.1,
-        "daily_volume": 4.1,
+        "daily_volume": 3.4,
         "sector": "公用事業",
         "dividend_yield": 4.99,
         "risk_level": "中",
@@ -80,7 +80,7 @@
         "low_52w": 38.39,
         "distance_from_low": 31.0,
         "market_cap": 212.2,
-        "daily_volume": 29.4,
+        "daily_volume": 29.5,
         "sector": "電信",
         "dividend_yield": 5.63,
         "risk_level": "低",
@@ -94,7 +94,7 @@
         "low_52w": 79.88,
         "distance_from_low": 67.5,
         "market_cap": 163.5,
-        "daily_volume": 13.0,
+        "daily_volume": 11.5,
         "sector": "能源",
         "dividend_yield": 2.51,
         "risk_level": "中低",
@@ -108,7 +108,7 @@
         "low_52w": 97.8,
         "distance_from_low": 74.8,
         "market_cap": 712.5,
-        "daily_volume": 25.3,
+        "daily_volume": 26.2,
         "sector": "能源",
         "dividend_yield": 2.41,
         "risk_level": "中低",
@@ -122,7 +122,7 @@
         "low_52w": 20.92,
         "distance_from_low": 29.3,
         "market_cap": 153.8,
-        "daily_volume": 45.0,
+        "daily_volume": 42.5,
         "sector": "醫療",
         "dividend_yield": 6.36,
         "risk_level": "中低",
@@ -136,7 +136,7 @@
         "low_52w": 73.31,
         "distance_from_low": 63.2,
         "market_cap": 295.8,
-        "daily_volume": 10.8,
+        "daily_volume": 11.0,
         "sector": "醫療",
         "dividend_yield": 2.84,
         "risk_level": "低",
@@ -246,15 +246,111 @@
       {
         "ticker": "DHR",
         "name": "Danaher",
-        "five_day_return": -4.1,
-        "rsi_14": 27.5,
-        "roc_14": -8.7,
-        "roc_21": -13.3,
+        "five_day_return": -3.9,
+        "rsi_14": 27.8,
+        "roc_14": -8.5,
+        "roc_21": -13.1,
         "status": "超賣",
         "outlook": "觀望",
         "trend": "低於主要均線"
       }
-    ]
+    ],
+    "marketContext": {
+      "indices": {
+        "SP500": {
+          "symbol": "^GSPC",
+          "name": "S&P 500",
+          "price": 6368.85,
+          "weekly_change": -2.12
+        },
+        "NASDAQ": {
+          "symbol": "^IXIC",
+          "name": "那斯達克",
+          "price": 20948.36,
+          "weekly_change": -3.23
+        },
+        "DJI": {
+          "symbol": "^DJI",
+          "name": "道瓊工業",
+          "price": 45166.64,
+          "weekly_change": -0.9
+        },
+        "VIX": {
+          "symbol": "^VIX",
+          "name": "恐慌指數 VIX",
+          "price": 29.97,
+          "weekly_change": 14.61
+        },
+        "TNX": {
+          "symbol": "^TNX",
+          "name": "10年期公債殖利率",
+          "price": 4.37,
+          "weekly_change": 0.78
+        }
+      },
+      "sectors": [
+        {
+          "etf": "XLE",
+          "name": "能源",
+          "price": 62.56,
+          "weekly_change": 6.17
+        },
+        {
+          "etf": "XLB",
+          "name": "原材料",
+          "price": 48.91,
+          "weekly_change": 4.57
+        },
+        {
+          "etf": "XLU",
+          "name": "公用事業",
+          "price": 45.59,
+          "weekly_change": 2.82
+        },
+        {
+          "etf": "XLP",
+          "name": "必需消費品",
+          "price": 81.78,
+          "weekly_change": 1.17
+        },
+        {
+          "etf": "XLV",
+          "name": "醫療保健",
+          "price": 143.26,
+          "weekly_change": -1.02
+        },
+        {
+          "etf": "XLI",
+          "name": "工業",
+          "price": 159.2,
+          "weekly_change": -1.25
+        },
+        {
+          "etf": "XLY",
+          "name": "非必需消費品",
+          "price": 105.68,
+          "weekly_change": -1.71
+        },
+        {
+          "etf": "XLF",
+          "name": "金融",
+          "price": 47.81,
+          "weekly_change": -2.09
+        },
+        {
+          "etf": "XLK",
+          "name": "科技",
+          "price": 129.92,
+          "weekly_change": -3.85
+        },
+        {
+          "etf": "XLC",
+          "name": "通訊服務",
+          "price": 107.04,
+          "weekly_change": -4.32
+        }
+      ]
+    }
   },
   {
     "date": "2025-11-10",
