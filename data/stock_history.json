@@ -1,8 +1,4 @@
-// 自動生成 by fetch_stocks.py
-// 最後更新: 2026-03-30 12:08:13
-// 共 1 週歷史資料 — 請勿手動編輯
-
-const STOCK_DATA = [
+[
   {
     "date": "2026-03-30",
     "valueStocks": [
@@ -260,4 +256,4 @@ const STOCK_DATA = [
       }
     ]
   }
-];
+]
