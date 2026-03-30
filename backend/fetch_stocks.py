@@ -126,7 +126,11 @@ def fetch_ticker(ticker: str) -> dict | None:
         mcap   = (info.get("marketCap") or 0) / 1e9
         vol    = ((info.get("averageDailyVolume10Day")
                    or info.get("averageVolume") or 0)) / 1e6
-        div    = (info.get("dividendYield") or 0) * 100
+        # yfinance 回傳 dividendYield 格式不固定：
+        # 舊版回傳小數 0.0466（需 ×100）；新版已回傳百分比 4.66（不需再 ×100）
+        # 用 > 1 判斷：若已是百分比格式則直接使用，否則乘以 100
+        div_raw = float(info.get("dividendYield") or 0)
+        div     = div_raw if div_raw > 1 else div_raw * 100
         low52  = info.get("fiftyTwoWeekLow") or float(closes.min())
         dist   = (price - low52) / low52 * 100 if low52 > 0 else 0
 
