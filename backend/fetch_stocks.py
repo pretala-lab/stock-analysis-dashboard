@@ -198,6 +198,78 @@ def build_momentum_stock(raw: dict, cfg: dict) -> dict:
     }
 
 
+# ═══════════════════════════════════════════════════════════
+# 市場背景資料抓取
+# ═══════════════════════════════════════════════════════════
+
+# 大盤指數
+INDICES = {
+    "SP500":  {"symbol": "^GSPC", "name": "S&P 500"},
+    "NASDAQ": {"symbol": "^IXIC", "name": "那斯達克"},
+    "DJI":    {"symbol": "^DJI",  "name": "道瓊工業"},
+    "VIX":    {"symbol": "^VIX",  "name": "恐慌指數 VIX"},
+    "TNX":    {"symbol": "^TNX",  "name": "10年期公債殖利率"},
+}
+
+# 板塊 ETF
+SECTOR_ETFS = [
+    {"etf": "XLK",  "name": "科技"},
+    {"etf": "XLV",  "name": "醫療保健"},
+    {"etf": "XLE",  "name": "能源"},
+    {"etf": "XLC",  "name": "通訊服務"},
+    {"etf": "XLP",  "name": "必需消費品"},
+    {"etf": "XLF",  "name": "金融"},
+    {"etf": "XLU",  "name": "公用事業"},
+    {"etf": "XLI",  "name": "工業"},
+    {"etf": "XLY",  "name": "非必需消費品"},
+    {"etf": "XLB",  "name": "原材料"},
+]
+
+
+def fetch_index(symbol: str) -> dict | None:
+    """抓取單一指數/ETF 的當前價格與週漲跌。"""
+    try:
+        tk   = yf.Ticker(symbol)
+        hist = tk.history(period="10d")
+        if hist.empty or len(hist) < 2:
+            return None
+        close   = hist["Close"]
+        current = float(close.iloc[-1])
+        prev5   = float(close.iloc[-6]) if len(close) >= 6 else float(close.iloc[0])
+        weekly  = round((current - prev5) / prev5 * 100, 2)
+        return {"price": round(current, 2), "weekly_change": weekly}
+    except Exception as exc:
+        print(f"  [市場] {symbol} 抓取失敗: {exc}")
+        return None
+
+
+def fetch_market_context() -> dict:
+    """抓取大盤指數、VIX、殖利率、板塊 ETF 表現。"""
+    print("\n🌍 抓取市場背景資料...")
+    ctx = {}
+
+    # 主要指數
+    indices_data = {}
+    for key, info in INDICES.items():
+        result = fetch_index(info["symbol"])
+        if result:
+            indices_data[key] = {**info, **result}
+            print(f"  [{key}] {result['price']}  ({result['weekly_change']:+.2f}%)")
+    ctx["indices"] = indices_data
+
+    # 板塊 ETF
+    sectors = []
+    for s in SECTOR_ETFS:
+        result = fetch_index(s["etf"])
+        if result:
+            sectors.append({**s, **result})
+    sectors.sort(key=lambda x: x["weekly_change"], reverse=True)
+    ctx["sectors"] = sectors
+
+    print(f"  板塊資料: {len(sectors)} 個")
+    return ctx
+
+
 def fetch_all() -> dict:
     print("\n📡 開始抓取所有股票資料...\n")
     raw = {}
@@ -219,12 +291,15 @@ def fetch_all() -> dict:
         reverse=True,
     )
 
+    market_context = fetch_market_context()
+
     today = date.today().isoformat()
     print(f"\n✅ 完成: 價值股 {len(value_stocks)} 支 / 動能股 {len(momentum_stocks)} 支")
     return {
         "date":           today,
         "valueStocks":    value_stocks,
         "momentumStocks": momentum_stocks,
+        "marketContext":  market_context,
     }
 
 

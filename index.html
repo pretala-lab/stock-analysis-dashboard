@@ -1606,9 +1606,14 @@ ul.styled-list li:before {
         <div class="container">
             <div class="page-header">
                 <h1 class="page-title">🌍 市場背景</h1>
-                <p class="page-subtitle">2025年11月美股市場環境與投資機會</p>
+                <p class="page-subtitle" id="market-subtitle">美股市場環境與投資機會</p>
             </div>
 
+            <!-- 動態渲染區 -->
+            <div id="market-dynamic-content"></div>
+
+            <!-- 以下靜態佔位，實際由 app.js 渲染，保留供參考 -->
+            <div style="display:none;">
             <!-- Market Overview -->
             <div class="card" style="margin-bottom: 32px;">
                 <h2 style="font-size: 20px; margin-bottom: 16px;">📊 市場概況</h2>
@@ -1717,6 +1722,7 @@ ul.styled-list li:before {
                     <p><strong>5. 風險控制：</strong>建議設置組合層面-10%止損點，單一股票-8%止損點，保護資本安全。</p>
                 </div>
             </div>
+            </div><!-- end display:none -->
         </div>
     </section>
 

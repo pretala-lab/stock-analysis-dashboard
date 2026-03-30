@@ -57,6 +57,7 @@ function changeWeek(index) {
   renderMomentumTable(d.momentumStocks);
   renderCrossPage(d);
   renderRiskPage(d);
+  renderMarketPage(d);
   updateHomeStats();
 }
 
@@ -428,6 +429,194 @@ function renderRiskPage(data) {
   container.innerHTML = lowHTML + midHTML + highHTML;
 }
 
+// ── 市場背景頁 ────────────────────────────────────────────────
+function renderMarketPage(data) {
+  const container = document.getElementById('market-dynamic-content');
+  const subtitle  = document.getElementById('market-subtitle');
+  if (!container) return;
+
+  const mc  = data.marketContext;
+  const vs  = data.valueStocks   || [];
+  const ms  = data.momentumStocks || [];
+  const mMap = Object.fromEntries(ms.map(s => [s.ticker, s]));
+
+  // 更新副標題
+  if (subtitle) subtitle.textContent = `${data.date} 美股市場環境與投資機會`;
+
+  // ── 若無市場背景資料（舊版快照）──────────────────────────
+  if (!mc || !mc.indices || Object.keys(mc.indices).length === 0) {
+    // 仍可從股票資料推導一些觀察
+    container.innerHTML = buildMarketFromStocksOnly(data, vs, ms, mMap);
+    return;
+  }
+
+  // ── 大盤指數 ───────────────────────────────────────────────
+  const idxOrder = ['SP500', 'NASDAQ', 'DJI', 'VIX', 'TNX'];
+  const idxCards = idxOrder.map(key => {
+    const idx = mc.indices[key];
+    if (!idx) return '';
+    const isVix = key === 'VIX';
+    const isTnx = key === 'TNX';
+    const chg   = idx.weekly_change;
+    const up    = chg >= 0;
+    // VIX：升是壞事；TNX：中性；其他：升是好事
+    const goodUp = !isVix;
+    const colorClass = (goodUp ? up : !up) ? 'positive' : 'negative';
+    const priceStr = isTnx ? `${idx.price.toFixed(2)}%` : idx.price.toLocaleString();
+    return `
+    <div class="card" style="text-align:center;">
+      <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:4px;">${idx.name}</div>
+      <div style="font-size:20px; font-weight:600;">${priceStr}</div>
+      <div class="${colorClass}" style="font-size:13px; margin-top:4px;">${up ? '▲' : '▼'} ${Math.abs(chg).toFixed(2)}% 週</div>
+    </div>`;
+  }).join('');
+
+  // ── VIX 風險解讀 ────────────────────────────────────────────
+  const vix = mc.indices['VIX']?.price || 0;
+  const vixLevel = vix < 15 ? { label: '低度恐慌', color: 'var(--color-success)', bg: 'var(--color-bg-3)', desc: '市場情緒樂觀，波動性低' }
+                 : vix < 25 ? { label: '中度不確定', color: 'var(--color-warning)', bg: 'var(--color-bg-2)', desc: '市場存在一定不確定性，正常範圍' }
+                 :             { label: '高度恐慌', color: 'var(--color-error)', bg: 'var(--color-bg-4)', desc: '市場高度恐慌，波動劇烈，需謹慎' };
+
+  // ── 板塊週漲跌排行 ─────────────────────────────────────────
+  const sectors = (mc.sectors || []).slice(0, 10);
+  const maxAbs  = Math.max(...sectors.map(s => Math.abs(s.weekly_change)), 0.1);
+  const sectorRows = sectors.map(s => {
+    const pct   = s.weekly_change;
+    const width = Math.abs(pct) / maxAbs * 100;
+    const up    = pct >= 0;
+    return `
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+      <span style="width:80px; font-size:12px; color:var(--color-text-secondary);">${s.name}</span>
+      <span style="font-size:11px; font-weight:600; width:40px; text-align:right; color:var(--color-text-secondary);">${s.etf}</span>
+      <div style="flex:1; background:var(--color-secondary); border-radius:4px; height:10px; overflow:hidden;">
+        <div style="width:${width}%; height:100%; background:${up ? 'var(--color-success)' : 'var(--color-error)'}; border-radius:4px;"></div>
+      </div>
+      <span class="${up ? 'positive' : 'negative'}" style="font-size:13px; font-weight:600; width:56px; text-align:right;">${up ? '+' : ''}${pct.toFixed(2)}%</span>
+    </div>`;
+  }).join('');
+
+  // ── 從股票資料推導機會與風險 ──────────────────────────────
+  const { opps, risks } = deriveOppsRisks(vs, ms, mMap);
+
+  container.innerHTML = `
+    <!-- 大盤指數 -->
+    <div class="grid grid-4" style="margin-bottom:32px; gap:16px;">
+      ${idxCards}
+    </div>
+
+    <!-- VIX 解讀 -->
+    <div style="padding:16px; background:${vixLevel.bg}; border-left:4px solid ${vixLevel.color}; border-radius:var(--radius-base); margin-bottom:32px;">
+      <strong>恐慌指數 VIX ${vix.toFixed(1)} — ${vixLevel.label}</strong>
+      <span style="font-size:13px; color:var(--color-text-secondary); margin-left:8px;">${vixLevel.desc}</span>
+    </div>
+
+    <!-- 板塊表現 + 本週股票觀察 -->
+    <div class="grid grid-2" style="margin-bottom:32px;">
+      <div class="card">
+        <h3 style="font-size:18px; margin-bottom:16px; color:var(--color-primary);">🏭 板塊週漲跌排行</h3>
+        ${sectorRows || '<p style="color:var(--color-text-secondary);font-size:13px;">板塊資料載入中…</p>'}
+      </div>
+      <div class="card">
+        <h3 style="font-size:18px; margin-bottom:16px; color:var(--color-primary);">📊 本週股票觀察</h3>
+        ${buildStockObservations(vs, ms, mMap)}
+      </div>
+    </div>
+
+    <!-- 機會與風險 -->
+    <div class="grid grid-2">
+      <div class="card" style="border-left:4px solid var(--color-success);">
+        <h3 style="font-size:18px; margin-bottom:16px; color:var(--color-success);">✅ 投資機會</h3>
+        ${opps}
+      </div>
+      <div class="card" style="border-left:4px solid var(--color-error);">
+        <h3 style="font-size:18px; margin-bottom:16px; color:var(--color-error);">⚠️ 風險因素</h3>
+        ${risks}
+      </div>
+    </div>`;
+}
+
+// 從股票資料推導機會與風險
+function deriveOppsRisks(vs, ms, mMap) {
+  const crossStocks   = vs.filter(v => mMap[v.ticker]);
+  const lowPE         = vs.filter(v => v.pe_ratio > 0 && v.pe_ratio <= 10);
+  const highDiv       = vs.filter(v => v.dividend_yield >= 4);
+  const overbought    = ms.filter(m => m.rsi_14 >= 70);
+  const oversold      = ms.filter(m => m.rsi_14 <= 30);
+  const bullish       = ms.filter(m => m.outlook === '樂觀');
+  const nearLow       = vs.filter(v => v.distance_from_low <= 10);
+
+  const oppItem = (title, desc) =>
+    `<div style="padding:12px; background:var(--color-bg-3); border-radius:var(--radius-base); margin-bottom:10px;">
+      <strong>${title}</strong><br><span style="font-size:12px;">${desc}</span></div>`;
+  const riskItem = (title, desc) =>
+    `<div style="padding:12px; background:var(--color-bg-4); border-radius:var(--radius-base); margin-bottom:10px;">
+      <strong>${title}</strong><br><span style="font-size:12px;">${desc}</span></div>`;
+
+  const opps = [
+    crossStocks.length  ? oppItem('雙重機會', `${crossStocks.map(s=>s.ticker).join('、')} 同時符合價值與動能標準`) : '',
+    lowPE.length        ? oppItem('低估值機會', `${lowPE.length} 支股票 P/E ≤ 10：${lowPE.map(s=>s.ticker).join('、')}`) : '',
+    highDiv.length      ? oppItem('高股息收益', `${highDiv.map(s=>`${s.ticker} ${s.dividend_yield.toFixed(1)}%`).join('、')}`) : '',
+    nearLow.length      ? oppItem('接近52週低點', `${nearLow.map(s=>s.ticker).join('、')} 距低點 ≤10%，進場點佳`) : '',
+    bullish.length      ? oppItem('動能樂觀', `${bullish.length} 支動能股展望樂觀，技術面支持上漲`) : '',
+    oversold.length     ? oppItem('超賣反彈機會', `${oversold.map(m=>m.ticker).join('、')} RSI ≤ 30，可能出現反彈`) : '',
+  ].filter(Boolean).join('') || oppItem('本週無明顯機會', '建議觀望或持倉等待');
+
+  const risks = [
+    overbought.length   ? riskItem('超買風險', `${overbought.map(m=>`${m.ticker} RSI ${m.rsi_14.toFixed(0)}`).join('、')} 短期回調壓力`) : '',
+    riskItem('行業風險', '能源股受油價波動影響，通訊業面臨競爭壓力'),
+    riskItem('宏觀風險', '利率政策、地緣政治、經濟數據均可能引發波動'),
+  ].filter(Boolean).join('');
+
+  return { opps, risks };
+}
+
+// 本週股票觀察（無大盤資料時也可用）
+function buildStockObservations(vs, ms, mMap) {
+  const items = [];
+  const avgPE  = vs.length ? vs.reduce((s,x) => s + x.pe_ratio, 0) / vs.length : 0;
+  const avgRSI = ms.length ? ms.reduce((s,x) => s + x.rsi_14, 0) / ms.length : 0;
+  const cross  = vs.filter(v => mMap[v.ticker]);
+  const bull   = ms.filter(m => m.outlook === '樂觀');
+  const ob     = ms.filter(m => m.rsi_14 >= 70);
+
+  if (avgPE   > 0) items.push(`平均 P/E：<strong>${avgPE.toFixed(1)}</strong>`);
+  if (avgRSI  > 0) items.push(`平均 RSI：<strong>${avgRSI.toFixed(1)}</strong>`);
+  if (cross.length) items.push(`雙重機會：<strong class="ticker">${cross.map(s=>s.ticker).join('、')}</strong>`);
+  if (bull.length)  items.push(`樂觀展望：<strong>${bull.length} 支</strong> (${bull.map(m=>m.ticker).join('、')})`);
+  if (ob.length)    items.push(`超買股票：<strong>${ob.map(m=>`${m.ticker}(${m.rsi_14.toFixed(0)})`).join('、')}</strong>`);
+
+  return items.map(i =>
+    `<div class="stat-item"><span style="font-size:13px;">${i}</span></div>`
+  ).join('') || '<p style="color:var(--color-text-secondary);font-size:13px;">無資料</p>';
+}
+
+// 無市場背景資料時的降級顯示（舊版快照用）
+function buildMarketFromStocksOnly(data, vs, ms, mMap) {
+  const { opps, risks } = deriveOppsRisks(vs, ms, mMap);
+  return `
+    <div class="info-box" style="margin-bottom:24px;">
+      <p style="font-size:13px;">此週（${data.date}）無大盤指數資料（初始版本），以下內容由股票資料推導。</p>
+    </div>
+    <div class="grid grid-2" style="margin-bottom:32px;">
+      <div class="card">
+        <h3 style="font-size:18px; margin-bottom:16px; color:var(--color-primary);">📊 本週股票觀察</h3>
+        ${buildStockObservations(vs, ms, mMap)}
+      </div>
+      <div class="card">
+        <h3 style="font-size:18px; margin-bottom:12px; color:var(--color-primary);">💡 說明</h3>
+        <p style="font-size:13px; line-height:1.6;">此週快照未包含大盤市場資料。從下次更新起，系統將自動抓取 S&amp;P 500、那斯達克、VIX、各板塊 ETF 等市場數據。</p>
+      </div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card" style="border-left:4px solid var(--color-success);">
+        <h3 style="font-size:18px; margin-bottom:16px; color:var(--color-success);">✅ 投資機會</h3>${opps}
+      </div>
+      <div class="card" style="border-left:4px solid var(--color-error);">
+        <h3 style="font-size:18px; margin-bottom:16px; color:var(--color-error);">⚠️ 風險因素</h3>${risks}
+      </div>
+    </div>`;
+}
+
 // ── 初始化 ────────────────────────────────────────────────────
 function init() {
   const d = currentData();
@@ -435,6 +624,7 @@ function init() {
   renderMomentumTable(d.momentumStocks);
   renderCrossPage(d);
   renderRiskPage(d);
+  renderMarketPage(d);
   renderWeekSelectors();
   updateHomeStats();
   setupTableSorting();
