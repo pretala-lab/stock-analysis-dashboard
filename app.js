@@ -55,6 +55,8 @@ function changeWeek(index) {
   const d = currentData();
   renderValueTable(d.valueStocks);
   renderMomentumTable(d.momentumStocks);
+  renderCrossPage(d);
+  renderRiskPage(d);
   updateHomeStats();
 }
 
@@ -243,11 +245,196 @@ function sortValueTable(key) {
   renderValueTable(sorted);
 }
 
+// ── 交叉分析頁 ───────────────────────────────────────────────
+function renderCrossPage(data) {
+  const container = document.getElementById('cross-dynamic-content');
+  if (!container) return;
+
+  const mMap = Object.fromEntries((data.momentumStocks || []).map(s => [s.ticker, s]));
+
+  // 找出同時出現在兩個名單的股票
+  const crossTickers = (data.valueStocks || [])
+    .filter(v => mMap[v.ticker])
+    .sort((a, b) => {
+      const ma = mMap[a.ticker], mb = mMap[b.ticker];
+      return (mb.five_day_return - ma.five_day_return);
+    });
+
+  if (!crossTickers.length) {
+    container.innerHTML = `<div class="info-box" style="margin-top:24px;">
+      <p style="font-size:14px;">本週無同時符合價值篩選與動能標準的交叉股票。</p>
+    </div>`;
+    return;
+  }
+
+  const cardColors = ['var(--color-success)', 'var(--color-warning)', 'var(--color-primary)'];
+  const bgColors   = ['var(--color-bg-3)', 'var(--color-bg-2)', 'var(--color-bg-1)'];
+
+  const cards = crossTickers.map((v, i) => {
+    const m = mMap[v.ticker];
+    const borderColor = cardColors[i] || cardColors[2];
+    const bgColor     = bgColors[i]   || bgColors[2];
+    const outlookClass = m.outlook === '樂觀' ? 'badge-success'
+                       : m.outlook === '謹慎'  ? 'badge-warning' : 'badge-info';
+    const statusClass  = m.status === '超買接近' ? 'badge-warning'
+                       : m.status === '超買'      ? 'badge-error' : 'badge-success';
+    return `
+    <div class="card" style="margin-top:24px; border: 2px solid ${borderColor};">
+      <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:16px;">
+        <div>
+          <h2 style="font-size:28px; margin-bottom:8px;"><span class="ticker">${v.ticker}</span> - ${v.name}</h2>
+          <p style="color:var(--color-text-secondary);">${v.sector} · 市值 $${v.market_cap.toFixed(1)}B</p>
+        </div>
+        <div style="text-align:right;">
+          <div class="badge" style="background:${borderColor};color:#fff;font-size:13px;padding:6px 14px;">
+            ${i === 0 ? '⭐ 首選推薦' : '推薦買入'}
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-2" style="margin-top:24px;">
+        <div>
+          <h3 style="font-size:16px; margin-bottom:12px; color:var(--color-primary);">💎 價值評估</h3>
+          <div class="stat-item"><span class="stat-label">本益比 (P/E)</span><span class="stat-value">${v.pe_ratio.toFixed(2)}</span></div>
+          <div class="stat-item"><span class="stat-label">現股價</span><span class="stat-value">$${v.current_price.toFixed(2)}</span></div>
+          <div class="stat-item"><span class="stat-label">52週低點</span><span class="stat-value">$${v.low_52w.toFixed(2)}</span></div>
+          <div class="stat-item"><span class="stat-label">距低點</span><span class="stat-value">${v.distance_from_low.toFixed(1)}%</span></div>
+          <div class="stat-item"><span class="stat-label">股息率</span><span class="stat-value positive">${v.dividend_yield.toFixed(2)}%</span></div>
+          <div class="stat-item"><span class="stat-label">日均成交量</span><span class="stat-value">${v.daily_volume.toFixed(1)}M 股</span></div>
+        </div>
+        <div>
+          <h3 style="font-size:16px; margin-bottom:12px; color:var(--color-primary);">🚀 動能表現</h3>
+          <div class="stat-item"><span class="stat-label">5日漲幅</span><span class="stat-value positive">+${m.five_day_return.toFixed(1)}%</span></div>
+          <div class="stat-item"><span class="stat-label">RSI (14日)</span><span class="stat-value">${m.rsi_14.toFixed(1)}</span></div>
+          <div class="stat-item"><span class="stat-label">ROC (14日)</span><span class="stat-value ${m.roc_14 >= 0 ? 'positive' : 'negative'}">${m.roc_14 >= 0 ? '+' : ''}${m.roc_14.toFixed(1)}%</span></div>
+          <div class="stat-item"><span class="stat-label">ROC (21日)</span><span class="stat-value ${m.roc_21 >= 0 ? 'positive' : 'negative'}">${m.roc_21 >= 0 ? '+' : ''}${m.roc_21.toFixed(1)}%</span></div>
+          <div class="stat-item"><span class="stat-label">市場狀態</span><span class="badge ${statusClass}">${m.status}</span></div>
+          <div class="stat-item"><span class="stat-label">1-2週展望</span><span class="badge ${outlookClass}">${m.outlook}</span></div>
+        </div>
+      </div>
+      <div style="margin-top:24px; padding:16px; background-color:${bgColor}; border-radius:var(--radius-base);">
+        <h3 style="font-size:14px; margin-bottom:8px; font-weight:600;">📈 資料日期：${data.date}</h3>
+        <p style="font-size:13px; line-height:1.6;">
+          ${v.ticker} 同時符合價值篩選（P/E ${v.pe_ratio.toFixed(2)}，距52週低點 ${v.distance_from_low.toFixed(1)}%）
+          與動能標準（5日漲幅 +${m.five_day_return.toFixed(1)}%，RSI ${m.rsi_14.toFixed(1)}）。
+          趨勢方向：${m.trend}。風險等級：${v.risk_level}。
+        </p>
+      </div>
+    </div>`;
+  }).join('');
+
+  // 對比分析表（前兩支）
+  let compTable = '';
+  if (crossTickers.length >= 2) {
+    const a = crossTickers[0], b = crossTickers[1];
+    const ma = mMap[a.ticker], mb = mMap[b.ticker];
+    const rows = [
+      ['P/E 比', a.pe_ratio.toFixed(2), b.pe_ratio.toFixed(2), a.pe_ratio < b.pe_ratio ? a.ticker : b.ticker, '更低估'],
+      ['距52週低點', a.distance_from_low.toFixed(1)+'%', b.distance_from_low.toFixed(1)+'%', a.distance_from_low < b.distance_from_low ? a.ticker : b.ticker, '更接近低點'],
+      ['5日漲幅', '+'+ma.five_day_return.toFixed(1)+'%', '+'+mb.five_day_return.toFixed(1)+'%', ma.five_day_return > mb.five_day_return ? a.ticker : b.ticker, '動能更強'],
+      ['股息率', a.dividend_yield.toFixed(2)+'%', b.dividend_yield.toFixed(2)+'%', a.dividend_yield > b.dividend_yield ? a.ticker : b.ticker, '收益更高'],
+      ['市值', '$'+a.market_cap.toFixed(1)+'B', '$'+b.market_cap.toFixed(1)+'B', a.market_cap > b.market_cap ? a.ticker : b.ticker, '更大型'],
+      ['風險等級', a.risk_level, b.risk_level, '', ''],
+    ];
+    compTable = `
+    <div style="margin-top:32px;">
+      <h2 style="font-size:20px; margin-bottom:16px; font-weight:600;">🔄 對比分析</h2>
+      <div class="table-container">
+        <table><thead><tr><th>指標</th><th>${a.ticker}</th><th>${b.ticker}</th><th>優勢</th></tr></thead>
+        <tbody>${rows.map(([label, av, bv, winner, desc]) => `
+          <tr><td>${label}</td>
+              <td class="${label.includes('漲幅') || label.includes('股息') ? 'positive' : ''}">${av}</td>
+              <td class="${label.includes('漲幅') || label.includes('股息') ? 'positive' : ''}">${bv}</td>
+              <td>${winner ? `<span class="ticker">${winner}</span> ${desc}` : '—'}</td></tr>`
+        ).join('')}</tbody></table>
+      </div>
+    </div>`;
+  }
+
+  container.innerHTML = cards + compTable;
+}
+
+// ── 風險評估頁 ────────────────────────────────────────────────
+function renderRiskPage(data) {
+  const container = document.getElementById('risk-dynamic-content');
+  if (!container) return;
+
+  const vs = data.valueStocks || [];
+  const LOW  = ['低'];
+  const MID  = ['中', '中低'];
+  const HIGH = ['高', '中高'];
+
+  const lowRisk  = vs.filter(s => LOW.includes(s.risk_level));
+  const midRisk  = vs.filter(s => MID.includes(s.risk_level));
+  const highRisk = vs.filter(s => HIGH.includes(s.risk_level));
+
+  // 更新概覽計數
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('risk-low-count',  `✅ 低風險 (${lowRisk.length}支)`);
+  set('risk-mid-count',  `⚡ 中風險 (${midRisk.length}支)`);
+  set('risk-high-count', `⚠️ 高風險 (${highRisk.length}支)`);
+
+  const mMapRisk = Object.fromEntries((data.momentumStocks || []).map(x => [x.ticker, x]));
+  const stockCard = (s, bg, large) => {
+    const m = mMapRisk[s.ticker];
+    const crossBadge = m ? ' <span class="badge badge-success" style="font-size:10px;">★雙優</span>' : '';
+    if (large) {
+      return `
+      <div style="padding:16px; background-color:${bg}; border-radius:var(--radius-base);">
+        <h3 style="font-size:16px; margin-bottom:8px;"><span class="ticker">${s.ticker}</span>${crossBadge} - ${s.name}</h3>
+        <div class="stat-item"><span class="stat-label">股價</span><span class="stat-value">$${s.current_price.toFixed(2)}</span></div>
+        <div class="stat-item"><span class="stat-label">市值</span><span class="stat-value">$${s.market_cap.toFixed(1)}B</span></div>
+        <div class="stat-item"><span class="stat-label">股息率</span><span class="stat-value positive">${s.dividend_yield.toFixed(2)}%</span></div>
+        <div class="stat-item"><span class="stat-label">P/E</span><span class="stat-value">${s.pe_ratio.toFixed(2)}</span></div>
+        <div class="stat-item"><span class="stat-label">產業</span><span class="stat-value">${s.sector}</span></div>
+      </div>`;
+    }
+    return `
+    <div style="padding:12px; background-color:${bg}; border-radius:var(--radius-base);">
+      <h3 style="font-size:14px; margin-bottom:6px;"><span class="ticker">${s.ticker}</span>${crossBadge}</h3>
+      <p style="font-size:12px; color:var(--color-text-secondary);">${s.name} · ${s.sector}</p>
+      <div style="margin-top:8px; font-size:12px;">
+        <div>股價: $${s.current_price.toFixed(2)}</div>
+        <div>市值: $${s.market_cap.toFixed(1)}B</div>
+        <div>P/E: ${s.pe_ratio.toFixed(2)} | 股息: ${s.dividend_yield.toFixed(2)}%</div>
+      </div>
+    </div>`;
+  };
+
+  const lowHTML = lowRisk.length ? `
+    <div class="card" style="margin-bottom:24px; border-left:4px solid var(--color-success);">
+      <h2 style="font-size:20px; margin-bottom:16px; color:var(--color-success);">✅ 低風險股票</h2>
+      <p style="margin-bottom:16px; font-size:13px;"><strong>特徵：</strong>超大市值（&gt;$100B）、高股息、防守性行業、低波動</p>
+      <div class="grid grid-2">${lowRisk.map(s => stockCard(s, 'var(--color-bg-3)', true)).join('')}</div>
+    </div>` : '';
+
+  const midHTML = midRisk.length ? `
+    <div class="card" style="margin-bottom:24px; border-left:4px solid var(--color-warning);">
+      <h2 style="font-size:20px; margin-bottom:16px; color:var(--color-warning);">⚡ 中風險股票</h2>
+      <p style="margin-bottom:16px; font-size:13px;"><strong>特徵：</strong>市值$10B-$500B、適度波動、多元化業務</p>
+      <div class="grid grid-3">${midRisk.map(s => stockCard(s, 'var(--color-bg-2)', false)).join('')}</div>
+      <p style="margin-top:16px; font-size:13px; line-height:1.6;"><strong>投資建議：</strong>適合平衡型投資者，建議分散配置於不同行業，注意能源板塊的油價風險。</p>
+    </div>` : '';
+
+  const highHTML = highRisk.length ? `
+    <div class="card" style="border-left:4px solid var(--color-error);">
+      <h2 style="font-size:20px; margin-bottom:16px; color:var(--color-error);">⚠️ 高風險股票</h2>
+      <p style="margin-bottom:16px; font-size:13px;"><strong>特徵：</strong>小市值或高波動行業、週期性強、無股息或股息低</p>
+      <div class="grid grid-2">${highRisk.map(s => stockCard(s, 'var(--color-bg-4)', true)).join('')}</div>
+      <div class="warning-box" style="margin-top:16px;">
+        <p style="font-size:13px; line-height:1.6;"><strong>⚠️ 重要提醒：</strong>高風險股票波動性大，建議僅以小倉位配置，並設置嚴格止損。不適合風險承受能力低或投資期限短的投資者。</p>
+      </div>
+    </div>` : '';
+
+  container.innerHTML = lowHTML + midHTML + highHTML;
+}
+
 // ── 初始化 ────────────────────────────────────────────────────
 function init() {
   const d = currentData();
   renderValueTable(d.valueStocks);
   renderMomentumTable(d.momentumStocks);
+  renderCrossPage(d);
+  renderRiskPage(d);
   renderWeekSelectors();
   updateHomeStats();
   setupTableSorting();

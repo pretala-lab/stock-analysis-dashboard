@@ -957,7 +957,11 @@ ul.styled-list li:before {
                 <p>僅有 <strong>2支股票</strong> 同時符合價值篩選（P/E ≤10，接近52週低點）與動能分析（5日表現最優）標準</p>
             </div>
 
-            <!-- MRK Card -->
+            <!-- 動態渲染區：MRK / COP 卡片 + 對比表 -->
+            <div id="cross-dynamic-content" style="margin-top: 32px;"></div>
+
+            <!-- 以下佔位，實際內容由 app.js 產生 -->
+            <div style="display:none;">
             <div class="card" style="margin-top: 32px; border: 2px solid var(--color-success);">
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
                     <div>
@@ -1169,6 +1173,7 @@ ul.styled-list li:before {
                     </table>
                 </div>
             </div>
+            </div><!-- end display:none -->
         </div>
     </section>
 
@@ -1183,19 +1188,24 @@ ul.styled-list li:before {
             <!-- Risk Overview -->
             <div class="grid grid-3" style="margin-bottom: 32px;">
                 <div class="card">
-                    <h3 style="color: var(--color-success); margin-bottom: 12px;">✅ 低風險 (2支)</h3>
+                    <h3 id="risk-low-count" style="color: var(--color-success); margin-bottom: 12px;">✅ 低風險</h3>
                     <p style="font-size: 13px; line-height: 1.6;">大市值、穩定股息、防守性行業</p>
                 </div>
                 <div class="card">
-                    <h3 style="color: var(--color-warning); margin-bottom: 12px;">⚡ 中風險 (6支)</h3>
+                    <h3 id="risk-mid-count" style="color: var(--color-warning); margin-bottom: 12px;">⚡ 中風險</h3>
                     <p style="font-size: 13px; line-height: 1.6;">市值適中、行業波動適度</p>
                 </div>
                 <div class="card">
-                    <h3 style="color: var(--color-error); margin-bottom: 12px;">⚠️ 高風險 (2支)</h3>
+                    <h3 id="risk-high-count" style="color: var(--color-error); margin-bottom: 12px;">⚠️ 高風險</h3>
                     <p style="font-size: 13px; line-height: 1.6;">高波動、行業週期性強</p>
                 </div>
             </div>
 
+            <!-- 動態渲染：風險分組卡片 -->
+            <div id="risk-dynamic-content"></div>
+
+            <!-- 以下佔位，實際內容由 app.js 產生 -->
+            <div style="display:none;">
             <!-- Low Risk Group -->
             <div class="card" style="margin-bottom: 24px; border-left: 4px solid var(--color-success);">
                 <h2 style="font-size: 20px; margin-bottom: 16px; color: var(--color-success);">✅ 低風險股票</h2>
@@ -1345,6 +1355,7 @@ ul.styled-list li:before {
                     <p style="font-size: 13px; line-height: 1.6;"><strong>⚠️ 重要提醒：</strong>高風險股票波動性大，建議僅以小倉位配置，並設置嚴格止損。不適合風險承受能力低或投資期限短的投資者。</p>
                 </div>
             </div>
+            </div><!-- end display:none -->
         </div>
     </section>
 
