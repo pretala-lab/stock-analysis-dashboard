@@ -1,8 +1,361 @@
 // 自動生成 by fetch_stocks.py
-// 最後更新: 2026-09-21 03:35:48
-// 共 27 週歷史資料 — 請勿手動編輯
+// 最後更新: 2026-09-28 03:57:31
+// 共 28 週歷史資料 — 請勿手動編輯
 
 const STOCK_DATA = [
+  {
+    "date": "2026-09-28",
+    "valueStocks": [
+      {
+        "ticker": "CMCSA",
+        "name": "康卡斯特",
+        "pe_ratio": 7.02,
+        "current_price": 21.91,
+        "low_52w": 21.28,
+        "distance_from_low": 3.0,
+        "market_cap": 77.8,
+        "daily_volume": 38.2,
+        "sector": "電信",
+        "dividend_yield": 6.02,
+        "risk_level": "中",
+        "recommendation": ""
+      },
+      {
+        "ticker": "CHTR",
+        "name": "Charter Communications",
+        "pe_ratio": 2.94,
+        "current_price": 112.91,
+        "low_52w": 111.55,
+        "distance_from_low": 1.2,
+        "market_cap": 14.7,
+        "daily_volume": 3.4,
+        "sector": "電信",
+        "dividend_yield": 0.0,
+        "risk_level": "中高",
+        "recommendation": ""
+      },
+      {
+        "ticker": "APA",
+        "name": "APA公司",
+        "pe_ratio": 9.02,
+        "current_price": 42.74,
+        "low_52w": 21.63,
+        "distance_from_low": 97.6,
+        "market_cap": 15.0,
+        "daily_volume": 6.9,
+        "sector": "能源",
+        "dividend_yield": 2.34,
+        "risk_level": "高",
+        "recommendation": ""
+      },
+      {
+        "ticker": "ALL",
+        "name": "Allstate公司",
+        "pe_ratio": 4.56,
+        "current_price": 227.6,
+        "low_52w": 188.08,
+        "distance_from_low": 21.0,
+        "market_cap": 57.6,
+        "daily_volume": 2.6,
+        "sector": "保險",
+        "dividend_yield": 1.9,
+        "risk_level": "中",
+        "recommendation": ""
+      },
+      {
+        "ticker": "EIX",
+        "name": "Edison International",
+        "pe_ratio": 5.43,
+        "current_price": 52.65,
+        "low_52w": 52.0,
+        "distance_from_low": 1.2,
+        "market_cap": 20.3,
+        "daily_volume": 4.7,
+        "sector": "公用事業",
+        "dividend_yield": 6.67,
+        "risk_level": "中",
+        "recommendation": ""
+      },
+      {
+        "ticker": "VZ",
+        "name": "Verizon",
+        "pe_ratio": 12.26,
+        "current_price": 47.08,
+        "low_52w": 38.39,
+        "distance_from_low": 22.6,
+        "market_cap": 195.6,
+        "daily_volume": 24.3,
+        "sector": "電信",
+        "dividend_yield": 6.01,
+        "risk_level": "低",
+        "recommendation": "優先推薦"
+      },
+      {
+        "ticker": "COP",
+        "name": "ConocoPhillips",
+        "pe_ratio": 16.84,
+        "current_price": 127.3,
+        "low_52w": 85.57,
+        "distance_from_low": 48.8,
+        "market_cap": 152.9,
+        "daily_volume": 7.9,
+        "sector": "能源",
+        "dividend_yield": 2.64,
+        "risk_level": "中低",
+        "recommendation": "推薦買入"
+      },
+      {
+        "ticker": "XOM",
+        "name": "埃克森美孚",
+        "pe_ratio": 20.67,
+        "current_price": 160.59,
+        "low_52w": 110.39,
+        "distance_from_low": 45.5,
+        "market_cap": 660.3,
+        "daily_volume": 15.4,
+        "sector": "能源",
+        "dividend_yield": 2.57,
+        "risk_level": "中低",
+        "recommendation": ""
+      },
+      {
+        "ticker": "PFE",
+        "name": "Pfizer",
+        "pe_ratio": 37.72,
+        "current_price": 28.67,
+        "low_52w": 23.62,
+        "distance_from_low": 21.4,
+        "market_cap": 163.4,
+        "daily_volume": 35.1,
+        "sector": "醫療",
+        "dividend_yield": 6.0,
+        "risk_level": "中低",
+        "recommendation": ""
+      },
+      {
+        "ticker": "MRK",
+        "name": "Merck",
+        "pe_ratio": 119.02,
+        "current_price": 148.78,
+        "low_52w": 78.03,
+        "distance_from_low": 90.7,
+        "market_cap": 367.1,
+        "daily_volume": 11.3,
+        "sector": "醫療",
+        "dividend_yield": 2.29,
+        "risk_level": "低",
+        "recommendation": "優先推薦"
+      }
+    ],
+    "momentumStocks": [
+      {
+        "ticker": "AMD",
+        "name": "AMD",
+        "five_day_return": 12.6,
+        "rsi_14": 80.4,
+        "roc_14": 32.0,
+        "roc_21": 31.1,
+        "status": "超買接近",
+        "outlook": "謹慎",
+        "trend": "高於所有均線"
+      },
+      {
+        "ticker": "AMGN",
+        "name": "Amgen",
+        "five_day_return": 7.5,
+        "rsi_14": 40.4,
+        "roc_14": -5.2,
+        "roc_21": -5.8,
+        "status": "偏弱",
+        "outlook": "觀望",
+        "trend": "高於所有均線"
+      },
+      {
+        "ticker": "DHR",
+        "name": "Danaher",
+        "five_day_return": 6.0,
+        "rsi_14": 73.9,
+        "roc_14": 8.1,
+        "roc_21": 4.2,
+        "status": "超買接近",
+        "outlook": "謹慎",
+        "trend": "高於所有均線"
+      },
+      {
+        "ticker": "LLY",
+        "name": "禮來",
+        "five_day_return": 2.6,
+        "rsi_14": 61.8,
+        "roc_14": 3.0,
+        "roc_21": -0.5,
+        "status": "中性",
+        "outlook": "樂觀",
+        "trend": "高於所有均線"
+      },
+      {
+        "ticker": "MRK",
+        "name": "Merck",
+        "five_day_return": 1.3,
+        "rsi_14": 48.2,
+        "roc_14": -0.4,
+        "roc_21": -2.2,
+        "status": "偏弱",
+        "outlook": "觀望",
+        "trend": "高於所有均線"
+      },
+      {
+        "ticker": "NKE",
+        "name": "Nike",
+        "five_day_return": 0.7,
+        "rsi_14": 27.4,
+        "roc_14": -6.9,
+        "roc_21": -6.4,
+        "status": "超賣",
+        "outlook": "觀望",
+        "trend": "低於主要均線"
+      },
+      {
+        "ticker": "GILD",
+        "name": "吉利德科學",
+        "five_day_return": 0.5,
+        "rsi_14": 51.7,
+        "roc_14": 0.5,
+        "roc_21": 2.5,
+        "status": "中性",
+        "outlook": "樂觀",
+        "trend": "高於所有均線"
+      },
+      {
+        "ticker": "ABBV",
+        "name": "AbbVie",
+        "five_day_return": 0.1,
+        "rsi_14": 65.0,
+        "roc_14": 3.1,
+        "roc_21": 0.5,
+        "status": "中性",
+        "outlook": "樂觀",
+        "trend": "高於所有均線"
+      },
+      {
+        "ticker": "CSCO",
+        "name": "Cisco",
+        "five_day_return": -2.6,
+        "rsi_14": 44.4,
+        "roc_14": -2.3,
+        "roc_21": -5.0,
+        "status": "偏弱",
+        "outlook": "觀望",
+        "trend": "高於200MA"
+      },
+      {
+        "ticker": "COP",
+        "name": "ConocoPhillips",
+        "five_day_return": -3.4,
+        "rsi_14": 39.0,
+        "roc_14": -5.2,
+        "roc_21": -2.5,
+        "status": "偏弱",
+        "outlook": "觀望",
+        "trend": "高於50/200MA"
+      }
+    ],
+    "marketContext": {
+      "indices": {
+        "SP500": {
+          "symbol": "^GSPC",
+          "name": "S&P 500",
+          "price": 7743.41,
+          "weekly_change": 1.21
+        },
+        "NASDAQ": {
+          "symbol": "^IXIC",
+          "name": "那斯達克",
+          "price": 27068.72,
+          "weekly_change": 2.06
+        },
+        "DJI": {
+          "symbol": "^DJI",
+          "name": "道瓊工業",
+          "price": 51828.62,
+          "weekly_change": 0.28
+        },
+        "VIX": {
+          "symbol": "^VIX",
+          "name": "恐慌指數 VIX",
+          "price": 14.87,
+          "weekly_change": 0.41
+        },
+        "TNX": {
+          "symbol": "^TNX",
+          "name": "10年期公債殖利率",
+          "price": 5.18,
+          "weekly_change": 3.72
+        }
+      },
+      "sectors": [
+        {
+          "etf": "XLK",
+          "name": "科技",
+          "price": 196.27,
+          "weekly_change": 3.64
+        },
+        {
+          "etf": "XLC",
+          "name": "通訊服務",
+          "price": 112.96,
+          "weekly_change": 2.28
+        },
+        {
+          "etf": "XLV",
+          "name": "醫療保健",
+          "price": 170.7,
+          "weekly_change": 1.76
+        },
+        {
+          "etf": "XLI",
+          "name": "工業",
+          "price": 170.43,
+          "weekly_change": 0.67
+        },
+        {
+          "etf": "XLB",
+          "name": "原材料",
+          "price": 49.8,
+          "weekly_change": 0.08
+        },
+        {
+          "etf": "XLY",
+          "name": "非必需消費品",
+          "price": 110.56,
+          "weekly_change": -0.2
+        },
+        {
+          "etf": "XLP",
+          "name": "必需消費品",
+          "price": 82.06,
+          "weekly_change": -0.24
+        },
+        {
+          "etf": "XLF",
+          "name": "金融",
+          "price": 54.84,
+          "weekly_change": -1.48
+        },
+        {
+          "etf": "XLE",
+          "name": "能源",
+          "price": 62.04,
+          "weekly_change": -2.96
+        },
+        {
+          "etf": "XLU",
+          "name": "公用事業",
+          "price": 39.51,
+          "weekly_change": -3.16
+        }
+      ]
+    }
+  },
   {
     "date": "2026-09-21",
     "valueStocks": [
